@@ -106,7 +106,8 @@ public class BugController
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteBug(@PathVariable(value = "id") Integer argBugId)
 	{
-		this.bugRepo.delete(argBugId);
+		// TODO: will be implemented later
+//		this.bugRepo.delete(argBugId);
 	}
 
 	/**
@@ -123,8 +124,10 @@ public class BugController
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public Bug updateBug(@RequestBody Bug argBug, @PathVariable(value = "id") Integer argBugId)
 	{
-		argBug.setIssueId(argBugId);
-		return this.bugRepo.saveAndFlush(argBug);
+//		TODO: will be implemented later
+//		argBug.setIssueId(argBugId);
+//		return this.bugRepo.saveAndFlush(argBug);
+		return null;
 	}
 	
 	/**
@@ -190,6 +193,4 @@ public class BugController
 		argBugPriority.setId(null);
 		return this.bugPriorityRepo.saveAndFlush(argBugPriority);
 	}
-	
-	
 }
