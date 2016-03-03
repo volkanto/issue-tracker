@@ -1,0 +1,24 @@
+{
+  "name": "issue-tracker",
+  "version": "0.0.1",
+  "authors": [
+    "Volkan Tokmak <git@tokmak.org>"
+  ],
+  "description": "Applicant Test Task for PinguinAG",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5.0",
+    "angular-bootstrap": "~0.13.0",
+    "ngstorage": "~0.3.10",
+    "angular-block-ui": "^0.2.2",
+    "bootstrap-css-only": "~3.2.0",
+    "angular-resource": "1.5.0",
+    "lodash": "^4.5.1"
+  }
+}
