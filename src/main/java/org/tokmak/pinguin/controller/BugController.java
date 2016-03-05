@@ -66,7 +66,6 @@ public class BugController
 		}
 		argBug.setStatus(status);
 		
-		
 		BugPriority priority = this.bugPriorityRepo.findOne(argBug.getPriority().getId());
 		if(priority == null) {
 			throw new IllegalArgumentException("Choose correct priority!");
