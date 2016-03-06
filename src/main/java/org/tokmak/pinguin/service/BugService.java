@@ -130,6 +130,11 @@ public class BugService
 	 */
 	public Bug update(Integer argBugId, Bug argBug)
 	{
+		Bug bug = this.bugRepo.findOne(argBugId);
+		if(bug == null) {
+			throw new IllegalArgumentException("Choose correct bug!");			
+		}
+		
 		argBug.setIssueId(argBugId);
 		return this.bugRepo.saveAndFlush(argBug);
 	}

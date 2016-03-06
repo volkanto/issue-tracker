@@ -68,7 +68,7 @@ public class DeveloperController
 	 * @since 0.0.1
 	 * @author Volkan Tokmak
 	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Developer developerInformation(@PathVariable(value = "id") Integer argDeveloperId)
 	{
 		return this.developerService.getInformation(argDeveloperId);

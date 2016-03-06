@@ -37,7 +37,7 @@ public class Story
 	private Date creationDate;
 	
 	@OneToOne
-	private StoryPoint estimatedPoint;
+	private StoryPoint point;
 	
 	@OneToOne
 	private StoryStatus status;
@@ -151,30 +151,30 @@ public class Story
 	}
 
 	/**
-	 * getEstimatedPoint<br />
-	 * @return the estimatedPoint
+	 * getPoint<br />
+	 * @return the point
 	 *
 	 * <b>created at</b> Mar 3, 2016 1:08:53 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public StoryPoint getEstimatedPoint()
+	public StoryPoint getPoint()
 	{
-		return this.estimatedPoint;
+		return this.point;
 	}
 
 	/**
-	 * setEstimatedPoint<br />
+	 * setPoint<br />
 	 *
-	 * @param argEstimatedPoint the estimatedPoint to set
+	 * @param argPoint the point to set
 	 *
 	 * <b>created at</b> Mar 3, 2016 1:08:53 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public void setEstimatedPoint(StoryPoint argEstimatedPoint)
+	public void setPoint(StoryPoint argPoint)
 	{
-		this.estimatedPoint = argEstimatedPoint;
+		this.point = argPoint;
 	}
 
 	/**

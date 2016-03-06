@@ -2,12 +2,14 @@ package org.tokmak.pinguin.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.tokmak.pinguin.model.Story;
+import org.tokmak.pinguin.service.StoryService;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -21,6 +23,8 @@ import org.tokmak.pinguin.model.Story;
 @RequestMapping("/story")
 public class StoryController
 {
+	@Autowired private StoryService storyService;
+	
 	/**
 	 * StoryController<br />
 	 *
@@ -33,7 +37,7 @@ public class StoryController
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public List<Story> listAllStories()
 	{
-		return null;
+		return this.storyService.listAll();
 	}
 	
 	/**
@@ -48,7 +52,7 @@ public class StoryController
 	@RequestMapping(value = "/unassigned/list", method = RequestMethod.GET)
 	public List<Story> listUnassignedStories()
 	{
-		return null;
+		return this.storyService.listUnassigned();
 	}
 
 	/**
@@ -64,8 +68,7 @@ public class StoryController
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public Story createStory(@RequestBody Story argStory)
 	{
-		argStory.setIssueId(null);
-		return null;
+		return this.storyService.create(argStory);
 	}
 
 	/**
@@ -78,10 +81,10 @@ public class StoryController
 	 * @since 0.0.1
 	 * @author Volkan Tokmak
 	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Story storyInformation(@PathVariable(value = "id") Integer argStoryId)
 	{
-		return null;
+		return this.storyService.findBy(argStoryId);
 	}
 
 	/**
@@ -96,7 +99,7 @@ public class StoryController
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteStory(@PathVariable(value = "id") Integer argStoryId)
 	{
-		
+		this.storyService.deleteBy(argStoryId);
 	}
 
 	/**
@@ -113,7 +116,6 @@ public class StoryController
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public Story updateStory(@RequestBody Story argStory, @PathVariable(value = "id") Integer argStoryId)
 	{
-		argStory.setIssueId(argStoryId);
-		return null;
+		return this.storyService.update(argStoryId, argStory);
 	}
 }
