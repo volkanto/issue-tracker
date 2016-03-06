@@ -75,21 +75,6 @@ public class SprintController
 	/**
 	 * SprintController<br />
 	 *
-	 * @param argSprintId
-	 * 
-	 * <b>created at</b> Mar 5, 2016 4:17:14 PM
-	 * @since 0.0.1
-	 * @author Volkan Tokmak
-	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void deleteSprint(@PathVariable(value = "id") Integer argSprintId)
-	{
-		
-	}
-
-	/**
-	 * SprintController<br />
-	 *
 	 * @param argSprint
 	 * @param argSprintId
 	 * @return

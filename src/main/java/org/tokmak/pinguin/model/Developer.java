@@ -35,7 +35,7 @@ public class Developer
 	private String name;
 	
 	@Column(name="ACTIVE")
-	private boolean active;
+	private boolean active = true;
 	
 	@OneToMany
 	@JoinTable(name = "DEVELOPER_BUG", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })

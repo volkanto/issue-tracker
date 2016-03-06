@@ -1,6 +1,5 @@
 package org.tokmak.pinguin.controller;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tokmak.pinguin.model.Bug;
 import org.tokmak.pinguin.model.BugPriority;
 import org.tokmak.pinguin.model.BugStatus;
-import org.tokmak.pinguin.repository.BugPriorityRepository;
-import org.tokmak.pinguin.repository.BugRepository;
-import org.tokmak.pinguin.repository.BugStatusRepository;
+import org.tokmak.pinguin.service.BugService;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -28,10 +25,8 @@ import org.tokmak.pinguin.repository.BugStatusRepository;
 @RequestMapping("/bug")
 public class BugController
 {
-	@Autowired private BugRepository bugRepo;
-	@Autowired private BugStatusRepository bugStatusRepo;
-	@Autowired private BugPriorityRepository bugPriorityRepo;
-
+	@Autowired private BugService bugService;
+	
 	/**
 	 * BugController<br />
 	 *
@@ -44,7 +39,7 @@ public class BugController
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public List<Bug> listAllBugs()
 	{
-		return this.bugRepo.findAll();
+		return this.bugService.listAll();
 	}
 	
 	/**
@@ -59,7 +54,7 @@ public class BugController
 	@RequestMapping(value = "/unassigned/list", method = RequestMethod.GET)
 	public List<Bug> listUnassignedBugs()
 	{
-		return this.bugRepo.findUnassigned();
+		return this.bugService.listUnassigned();
 	}
 
 	/**
@@ -75,21 +70,7 @@ public class BugController
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public Bug createBug(@RequestBody Bug argBug)
 	{
-		BugStatus status = this.bugStatusRepo.findOne(argBug.getStatus().getId());
-		if(status == null) {
-			throw new IllegalArgumentException("Choose correct status!");
-		}
-		argBug.setStatus(status);
-		
-		BugPriority priority = this.bugPriorityRepo.findOne(argBug.getPriority().getId());
-		if(priority == null) {
-			throw new IllegalArgumentException("Choose correct priority!");
-		}
-		argBug.setPriority(priority);
-		
-		argBug.setIssueId(null);
-		argBug.setCreationDate(Calendar.getInstance().getTime());
-		return this.bugRepo.saveAndFlush(argBug);
+		return this.bugService.create(argBug);
 	}
 
 	/**
@@ -105,7 +86,7 @@ public class BugController
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Bug bugInformation(@PathVariable(value = "id") Integer argBugId)
 	{
-		return this.bugRepo.findOne(argBugId);
+		return this.bugService.findBy(argBugId);
 	}
 
 	/**
@@ -120,8 +101,7 @@ public class BugController
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteBug(@PathVariable(value = "id") Integer argBugId)
 	{
-		// TODO: will be implemented later
-//		this.bugRepo.delete(argBugId);
+		this.bugService.deleteBy(argBugId);
 	}
 
 	/**
@@ -138,10 +118,7 @@ public class BugController
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public Bug updateBug(@RequestBody Bug argBug, @PathVariable(value = "id") Integer argBugId)
 	{
-//		TODO: will be implemented later
-//		argBug.setIssueId(argBugId);
-//		return this.bugRepo.saveAndFlush(argBug);
-		return null;
+		return this.bugService.update(argBugId, argBug);
 	}
 	
 	/**
@@ -156,7 +133,7 @@ public class BugController
 	@RequestMapping(value = "/status/list", method = RequestMethod.GET)
 	public List<BugStatus> listAllBugStatus()
 	{
-		return this.bugStatusRepo.findAll();
+		return this.bugService.listStatus();
 	}
 	
 	/**
@@ -172,8 +149,7 @@ public class BugController
 	@RequestMapping(value = "/status/create", method = RequestMethod.POST)
 	public BugStatus createBugStatus(@RequestBody BugStatus argBugStatus)
 	{
-		argBugStatus.setId(null);
-		return this.bugStatusRepo.saveAndFlush(argBugStatus);
+		return this.bugService.createStatus(argBugStatus);
 	}
 	
 	/**
@@ -188,7 +164,7 @@ public class BugController
 	@RequestMapping(value = "/priority/list", method = RequestMethod.GET)
 	public List<BugPriority> listAllBugPriority()
 	{
-		return this.bugPriorityRepo.findAll();
+		return this.bugService.listPriority();
 	}
 	
 	/**
@@ -204,7 +180,6 @@ public class BugController
 	@RequestMapping(value = "/priority/create", method = RequestMethod.POST)
 	public BugPriority createBugPriority(@RequestBody BugPriority argBugPriority)
 	{
-		argBugPriority.setId(null);
-		return this.bugPriorityRepo.saveAndFlush(argBugPriority);
+		return this.bugService.createPriority(argBugPriority);
 	}
 }

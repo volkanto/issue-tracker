@@ -2,6 +2,8 @@ package org.tokmak.pinguin.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tokmak.pinguin.model.Developer;
@@ -16,6 +18,7 @@ import org.tokmak.pinguin.repository.DeveloperRepository;
  * @since 0.0.1
  */
 @Service
+@Transactional
 public class DeveloperService
 {
 	@Autowired private DeveloperRepository developerRepository;
@@ -47,10 +50,11 @@ public class DeveloperService
 	public Developer create(Developer argDeveloper)
 	{
 		if(developerExist(argDeveloper)) {
-			throw new RuntimeException(); // TODO
+			throw new RuntimeException("Developer Exists"); 
 		}
 		
 		argDeveloper.setId(null);
+		argDeveloper.setActive(true);
 		return this.developerRepository.saveAndFlush(argDeveloper);
 	}
 
@@ -133,7 +137,7 @@ public class DeveloperService
 	{
 		Developer developer = this.developerRepository.findOne(argDeveloperId);
 		if(developer == null) {
-			throw new RuntimeException(); // TODO
+			throw new RuntimeException("Developer not exists");
 		}
 	}
 	
@@ -151,7 +155,7 @@ public class DeveloperService
 	{
 		Developer developer = this.developerRepository.findOne(argDeveloperId);
 		if(developer == null) {
-			throw new RuntimeException(); // TODO
+			throw new RuntimeException("Developer not exists");
 		}
 		return developer;
 	}

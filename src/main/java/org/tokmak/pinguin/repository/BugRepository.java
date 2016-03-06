@@ -19,4 +19,8 @@ public interface BugRepository extends JpaRepository<Bug, Integer>
 {
 	@Query(value = "SELECT * FROM BUG WHERE ISSUEID NOT IN (SELECT B.ISSUEID FROM BUG B LEFT JOIN DEVELOPER_BUG DB ON DB.ISSUEID = B.ISSUEID WHERE B.ISSUEID = DB.ISSUEID)", nativeQuery = true)
 	public List<Bug> findUnassigned();
+
+	@Query(value="from Bug b order by b.issueId asc")
+	@Override
+	public List<Bug> findAll();
 }
