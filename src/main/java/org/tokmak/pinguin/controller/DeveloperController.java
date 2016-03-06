@@ -71,7 +71,7 @@ public class DeveloperController
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Developer developerInformation(@PathVariable(value = "id") Integer argDeveloperId)
 	{
-		return this.developerService.getInformation(argDeveloperId);
+		return this.developerService.findBy(argDeveloperId);
 	}
 
 	/**

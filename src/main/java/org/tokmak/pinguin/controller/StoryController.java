@@ -118,4 +118,21 @@ public class StoryController
 	{
 		return this.storyService.update(argStoryId, argStory);
 	}
+	
+	/**
+	 * StoryController<br />
+	 *
+	 * @param argStoryId
+	 * @param argDeveloperId
+	 * 
+	 * <b>created at</b> Mar 6, 2016 5:39:12 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	@RequestMapping(value = "/assign/{storyIds}/developer/{developerId}", method = RequestMethod.POST)
+	public void assignToDeveloper(@PathVariable(value = "storyIds") List<Integer> argStoryIds, 
+								  @PathVariable(value = "developerId") Integer argDeveloperId) 
+	{
+		this.storyService.assign(argStoryIds, argDeveloperId);
+	}
 }

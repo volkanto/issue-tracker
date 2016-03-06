@@ -1,12 +1,15 @@
 package org.tokmak.pinguin.service;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.tokmak.pinguin.model.Developer;
 import org.tokmak.pinguin.model.Story;
 import org.tokmak.pinguin.model.StoryPoint;
 import org.tokmak.pinguin.model.StoryStatus;
@@ -29,6 +32,7 @@ public class StoryService
 	@Autowired private StoryRepository storyRepo;
 	@Autowired private StoryStatusRepository storyStatusRepo;
 	@Autowired private StoryPointRepository storyPointRepo;
+	@Autowired private DeveloperService developerService;
 	
 	/**
 	 * StoryService<br />
@@ -139,4 +143,33 @@ public class StoryService
 		return this.storyRepo.saveAndFlush(argStory);
 	}
 
+	/**
+	 * StoryService<br />
+	 *
+	 * @param argStoryIdList
+	 * @param argDeveloperId
+	 * 
+	 * <b>created at</b> Mar 6, 2016 5:40:19 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public void assign(List<Integer> argStoryIdList, Integer argDeveloperId)
+	{
+		Developer developer = this.developerService.findBy(argDeveloperId);
+		if(developer == null) {
+			throw new IllegalArgumentException("Choose correct developer!");			
+		}
+		
+		Set<Story> storyListToAssign = new HashSet<>();
+		argStoryIdList.stream().forEach(itemId -> {
+			Story story = this.findBy(itemId);
+			if(story == null) {
+				throw new IllegalArgumentException("Choose correct stories!");	
+			}
+			
+			storyListToAssign.add(story);
+		});
+		
+		developer.setStories(storyListToAssign);
+	}
 }

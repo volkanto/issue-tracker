@@ -39,11 +39,11 @@ public class Developer
 	
 	@OneToMany
 	@JoinTable(name = "DEVELOPER_BUG", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
-	private Set<Bug> developerBugs = new HashSet<Bug>(0);
+	private Set<Bug> bugs = new HashSet<Bug>(0);
 	
 	@OneToMany
 	@JoinTable(name = "DEVELOPER_STORY", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
-	private Set<Story> developerStories = new HashSet<Story>(0);
+	private Set<Story> stories = new HashSet<Story>(0);
 	
 	/**
 	 * getId<br />
@@ -121,28 +121,53 @@ public class Developer
 		this.active = argActive;
 	}
 	/**
-	 * getDeveloperBugs<br />
-	 * @return the developerBugs
+	 * getBugs<br />
+	 * @return the bugs
 	 *
-	 * <b>created at</b> Mar 6, 2016 1:00:06 AM
+	 * <b>created at</b> Mar 6, 2016 5:47:54 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public Set<Bug> getDeveloperBugs()
+	public Set<Bug> getBugs()
 	{
-		return this.developerBugs;
+		return this.bugs;
 	}
 	/**
-	 * setDeveloperBugs<br />
+	 * setBugs<br />
 	 *
-	 * @param argDeveloperBugs the developerBugs to set
+	 * @param argBugs the bugs to set
 	 *
-	 * <b>created at</b> Mar 6, 2016 1:00:06 AM
+	 * <b>created at</b> Mar 6, 2016 5:47:54 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public void setDeveloperBugs(Set<Bug> argDeveloperBugs)
+	public void setBugs(Set<Bug> argBugs)
 	{
-		this.developerBugs = argDeveloperBugs;
+		this.bugs = argBugs;
+	}
+	/**
+	 * getStories<br />
+	 * @return the stories
+	 *
+	 * <b>created at</b> Mar 6, 2016 5:47:54 PM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public Set<Story> getStories()
+	{
+		return this.stories;
+	}
+	/**
+	 * setStories<br />
+	 *
+	 * @param argStories the stories to set
+	 *
+	 * <b>created at</b> Mar 6, 2016 5:47:54 PM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public void setStories(Set<Story> argStories)
+	{
+		this.stories = argStories;
 	}
 }

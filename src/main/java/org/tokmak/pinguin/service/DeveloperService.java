@@ -83,7 +83,7 @@ public class DeveloperService
 	 * @since 0.0.1
 	 * @author Volkan Tokmak
 	 */
-	public Developer getInformation(Integer argDeveloperId)
+	public Developer findBy(Integer argDeveloperId)
 	{
 		return this.developerRepository.findOne(argDeveloperId);
 	}

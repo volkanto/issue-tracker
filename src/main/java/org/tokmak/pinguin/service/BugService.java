@@ -1,7 +1,9 @@
 package org.tokmak.pinguin.service;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.tokmak.pinguin.model.Bug;
 import org.tokmak.pinguin.model.BugPriority;
 import org.tokmak.pinguin.model.BugStatus;
+import org.tokmak.pinguin.model.Developer;
 import org.tokmak.pinguin.repository.BugPriorityRepository;
 import org.tokmak.pinguin.repository.BugRepository;
 import org.tokmak.pinguin.repository.BugStatusRepository;
@@ -29,6 +32,7 @@ public class BugService
 	@Autowired private BugRepository bugRepo;
 	@Autowired private BugStatusRepository bugStatusRepo;
 	@Autowired private BugPriorityRepository bugPriorityRepo;
+	@Autowired private DeveloperService developerService;
 	
 	/**
 	 * BugService<br />
@@ -199,4 +203,33 @@ public class BugService
 		return this.bugPriorityRepo.saveAndFlush(argBugPriority);
 	}
 
+	/**
+	 * BugService<br />
+	 *
+	 * @param argBugIdList
+	 * @param argDeveloperId
+	 * 
+	 * <b>created at</b> Mar 6, 2016 5:49:44 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public void assign(List<Integer> argBugIdList, Integer argDeveloperId)
+	{
+		Developer developer = this.developerService.findBy(argDeveloperId);
+		if(developer == null) {
+			throw new IllegalArgumentException("Choose correct developer!");			
+		}
+		
+		Set<Bug> bugListToAssign = new HashSet<>();
+		argBugIdList.stream().forEach(itemId -> {
+			Bug bug = this.findBy(itemId);
+			if(bug == null) {
+				throw new IllegalArgumentException("Choose correct bugs!");	
+			}
+			
+			bugListToAssign.add(bug);
+		});
+		
+		developer.setBugs(bugListToAssign);
+	}
 }

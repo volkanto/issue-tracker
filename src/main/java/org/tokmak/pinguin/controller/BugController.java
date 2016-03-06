@@ -182,4 +182,21 @@ public class BugController
 	{
 		return this.bugService.createPriority(argBugPriority);
 	}
+	
+	/**
+	 * BugController<br />
+	 *
+	 * @param argBugIds
+	 * @param argDeveloperId
+	 * 
+	 * <b>created at</b> Mar 6, 2016 5:49:35 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	@RequestMapping(value = "/assign/{bugIds}/developer/{developerId}", method = RequestMethod.POST)
+	public void assignToDeveloper(@PathVariable(value = "bugIds") List<Integer> argBugIds, 
+								  @PathVariable(value = "developerId") Integer argDeveloperId) 
+	{
+		this.bugService.assign(argBugIds, argDeveloperId);
+	}
 }
