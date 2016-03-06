@@ -46,6 +46,21 @@ public class BugController
 	{
 		return this.bugRepo.findAll();
 	}
+	
+	/**
+	 * BugController<br />
+	 *
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 6, 2016 1:24:56 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	@RequestMapping(value = "/unassigned/list", method = RequestMethod.GET)
+	public List<Bug> listUnassignedBugs()
+	{
+		return this.bugRepo.findUnassigned();
+	}
 
 	/**
 	 * BugController<br />

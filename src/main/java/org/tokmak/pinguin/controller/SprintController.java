@@ -2,12 +2,14 @@ package org.tokmak.pinguin.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.tokmak.pinguin.model.Sprint;
+import org.tokmak.pinguin.service.SprintService;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -21,6 +23,8 @@ import org.tokmak.pinguin.model.Sprint;
 @RequestMapping("/sprint")
 public class SprintController
 {
+	@Autowired private SprintService sprintService; 
+	
 	/**
 	 * SprintController<br />
 	 *
@@ -33,7 +37,7 @@ public class SprintController
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public List<Sprint> listAllSprints()
 	{
-		return null;
+		return this.sprintService.listAll();
 	}
 	
 	/**
@@ -47,10 +51,9 @@ public class SprintController
 	 * @author Volkan Tokmak
 	 */
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public Sprint createSpring(@RequestBody Sprint argSprint)
+	public Sprint createSprint(@RequestBody Sprint argSprint)
 	{
-		argSprint.setId(null);
-		return null;
+		return this.sprintService.create(argSprint);
 	}
 
 	/**
@@ -66,7 +69,7 @@ public class SprintController
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
 	public Sprint sprintInformation(@PathVariable(value = "id") Integer argSprintId)
 	{
-		return null;
+		return this.sprintService.getInformation(argSprintId);
 	}
 
 	/**

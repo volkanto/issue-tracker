@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -15,14 +16,17 @@ import javax.persistence.Id;
  * @since 0.0.1
  */
 @Entity
+@Table(name="BUG_STATUS")
 public class BugStatus
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="BUGSTATUSID")
 	private Integer id;
 	
-	@Column
+	@Column(name="DESCRIPTION")
 	private String description;
+	
 	/**
 	 * getId<br />
 	 * @return the id

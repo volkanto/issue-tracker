@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -15,13 +16,15 @@ import javax.persistence.Id;
  * @since 0.0.1
  */
 @Entity
-public class StoryEstimatedPoint
+@Table(name="STORY_POINT")
+public class StoryPoint
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="STORYPOINTID")
 	private Integer id;
 	
-	@Column
+	@Column(name="POINTVALUE")
 	private Double value;
 
 	/**

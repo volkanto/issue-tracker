@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -18,19 +19,21 @@ import javax.persistence.OneToOne;
  * @since 0.0.1
  */
 @Entity
+@Table(name="BUG")
 public class Bug
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ISSUEID")
 	private Integer issueId;
 	
-	@Column
+	@Column(name="TITLE")
 	private String title;
 	
-	@Column
+	@Column(name="DESCRIPTION")
 	private String description;
 	
-	@Column
+	@Column(name="CREATIONDATE")
 	private Date creationDate;
 	
 	@OneToOne

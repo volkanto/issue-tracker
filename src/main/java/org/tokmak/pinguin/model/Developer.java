@@ -1,10 +1,17 @@
 package org.tokmak.pinguin.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -16,17 +23,27 @@ import javax.persistence.Id;
  * @since 0.0.1
  */
 @Entity
+@Table(name="DEVELOPER")
 public class Developer
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="DEVELOPERID")
 	private Integer id;
 	
-	@Column
+	@Column(name="NAME")
 	private String name;
 	
-	@Column
+	@Column(name="ACTIVE")
 	private boolean active;
+	
+	@OneToMany
+	@JoinTable(name = "DEVELOPER_BUG", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
+	private Set<Bug> developerBugs = new HashSet<Bug>(0);
+	
+	@OneToMany
+	@JoinTable(name = "DEVELOPER_STORY", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
+	private Set<Story> developerStories = new HashSet<Story>(0);
 	
 	/**
 	 * getId<br />
@@ -102,5 +119,30 @@ public class Developer
 	public void setActive(boolean argActive)
 	{
 		this.active = argActive;
+	}
+	/**
+	 * getDeveloperBugs<br />
+	 * @return the developerBugs
+	 *
+	 * <b>created at</b> Mar 6, 2016 1:00:06 AM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public Set<Bug> getDeveloperBugs()
+	{
+		return this.developerBugs;
+	}
+	/**
+	 * setDeveloperBugs<br />
+	 *
+	 * @param argDeveloperBugs the developerBugs to set
+	 *
+	 * <b>created at</b> Mar 6, 2016 1:00:06 AM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public void setDeveloperBugs(Set<Bug> argDeveloperBugs)
+	{
+		this.developerBugs = argDeveloperBugs;
 	}
 }

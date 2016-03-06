@@ -1,12 +1,18 @@
 package org.tokmak.pinguin.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -17,23 +23,29 @@ import javax.persistence.Id;
  * @since 0.0.1
  */
 @Entity
+@Table(name="SPRINT")
 public class Sprint
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="SPRINTID")
 	private Integer id;
 	
-	@Column
+	@Column(name="TITLE")
 	private String title;
 	
-	@Column
+	@Column(name="DESCRIPTION")
 	private String description;
 	
-	@Column
+	@Column(name="STARTDATE")
 	private Date startDate;
 	
-	@Column
+	@Column(name="ENDDATE")
 	private Date endDate;
+	
+	@OneToMany
+	@JoinTable(name = "SPRINT_STORY", joinColumns = { @JoinColumn(name = "SPRINTID") }, inverseJoinColumns = { @JoinColumn(name = "STORYID") })
+	private Set<Story> sprintStories = new HashSet<Story>(0);
 
 	/**
 	 * getId<br />
@@ -168,5 +180,32 @@ public class Sprint
 	public void setEndDate(Date argEndDate)
 	{
 		this.endDate = argEndDate;
+	}
+
+	/**
+	 * getSprintStories<br />
+	 * @return the sprintStories
+	 *
+	 * <b>created at</b> Mar 6, 2016 1:21:00 AM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public Set<Story> getSprintStories()
+	{
+		return this.sprintStories;
+	}
+
+	/**
+	 * setSprintStories<br />
+	 *
+	 * @param argSprintStories the sprintStories to set
+	 *
+	 * <b>created at</b> Mar 6, 2016 1:21:00 AM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public void setSprintStories(Set<Story> argSprintStories)
+	{
+		this.sprintStories = argSprintStories;
 	}
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.tokmak.pinguin.model.Developer;
-import org.tokmak.pinguin.repository.DeveloperRepository;
+import org.tokmak.pinguin.service.DeveloperService;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -25,7 +25,7 @@ import org.tokmak.pinguin.repository.DeveloperRepository;
 public class DeveloperController
 {
 	@Autowired
-	private DeveloperRepository developerRepo;
+	private DeveloperService developerService;
 
 	/**
 	 * DeveloperController<br />
@@ -39,7 +39,7 @@ public class DeveloperController
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public List<Developer> listAllDevelopers()
 	{
-		return this.developerRepo.findAll();
+		return this.developerService.findAll();
 	}
 
 	/**
@@ -55,8 +55,7 @@ public class DeveloperController
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public Developer createDeveloper(@RequestBody Developer argDeveloper)
 	{
-		argDeveloper.setId(null);
-		return this.developerRepo.saveAndFlush(argDeveloper);
+		return this.developerService.create(argDeveloper);
 	}
 
 	/**
@@ -72,7 +71,7 @@ public class DeveloperController
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
 	public Developer developerInformation(@PathVariable(value = "id") Integer argDeveloperId)
 	{
-		return this.developerRepo.findOne(argDeveloperId);
+		return this.developerService.getInformation(argDeveloperId);
 	}
 
 	/**
@@ -87,7 +86,7 @@ public class DeveloperController
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteDeveloper(@PathVariable(value = "id") Integer argDeveloperId)
 	{
-		this.developerRepo.delete(argDeveloperId);
+		this.developerService.delete(argDeveloperId);
 	}
 
 	/**
@@ -105,7 +104,6 @@ public class DeveloperController
 	public Developer updateDeveloper(@RequestBody Developer argDeveloper,
 									 @PathVariable(value = "id") Integer argDeveloperId)
 	{
-		argDeveloper.setId(argDeveloperId);
-		return this.developerRepo.saveAndFlush(argDeveloper);
+		return this.developerService.update(argDeveloperId, argDeveloper);
 	}
 }

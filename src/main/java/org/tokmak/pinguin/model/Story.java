@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -18,23 +19,25 @@ import javax.persistence.OneToOne;
  * @since 0.0.1
  */
 @Entity
+@Table(name="STORY")
 public class Story
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ISSUEID")
 	private Integer issueId;
 	
-	@Column
+	@Column(name="TITLE")
 	private String title;
 	
-	@Column
+	@Column(name="DESCRIPTION")
 	private String description;
 	
-	@Column
+	@Column(name="CREATIONDATE")
 	private Date creationDate;
 	
 	@OneToOne
-	private StoryEstimatedPoint estimatedPoint;
+	private StoryPoint estimatedPoint;
 	
 	@OneToOne
 	private StoryStatus status;
@@ -155,7 +158,7 @@ public class Story
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public StoryEstimatedPoint getEstimatedPoint()
+	public StoryPoint getEstimatedPoint()
 	{
 		return this.estimatedPoint;
 	}
@@ -169,7 +172,7 @@ public class Story
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public void setEstimatedPoint(StoryEstimatedPoint argEstimatedPoint)
+	public void setEstimatedPoint(StoryPoint argEstimatedPoint)
 	{
 		this.estimatedPoint = argEstimatedPoint;
 	}
