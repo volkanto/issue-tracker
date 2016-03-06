@@ -1,0 +1,24 @@
+<div class="jumbotron">
+	<p>This one is very simple and basic issue tracker system, features are:</p>
+	<ul>
+		<li>Create/Edit/Delete Developer</li>
+		<li>Create/Edit Bug</li>
+		<li>Create/Edit Story</li>
+		<li>Create/Edit Sprint</li>
+		<li>Assign bug or story to developer</li>
+		<li>Assign story to sprint</li>
+	</ul>
+	<p>
+		<a class="btn btn-lg btn-primary" href="#/developer" role="button">Start with creating a developer &raquo;</a>
+	</p>
+	
+	<p>
+		You have:
+		<ul>
+			<li>{{developers}} developer!</li>
+			<li>{{bugs}} bug!</li>
+			<li>{{stories}} <span ng-if="stories > 0">stories!</span> <span ng-if="stories == 0">story!</span></li>
+			<li>{{sprints}} sprint!</li>
+		</ul>
+	</p>
+</div>

@@ -2,45 +2,51 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="./bower_components/bootstrap-css-only/css/bootstrap.min.css"/>
+        <title>Simple Issue Tracker Application</title>
     </head>
-    <body ng-app="myApp">
-        <div class="container" ng-controller="AppController">
-            <div class="page-header">
-                <h1>A checklist</h1>
-            </div>
-            <div class="alert alert-info" role="alert" ng-hide="items && items.length > 0">
-                There are no items yet.
-            </div>
-            <form class="form-horizontal" role="form" ng-submit="addItem(newItem)">
-                <div class="form-group" ng-repeat="item in items">
-                    <div class="checkbox col-xs-9">
-                        <label>
-                            <input type="checkbox" ng-model="item.checked" ng-change="updateItem(item)"/>
-                            {{item.description}}
-                        </label>
-                    </div>
-                    <div class="col-xs-3">
-                        <button class="pull-right btn btn-danger" type="button" title="Delete" ng-click="deleteItem(item)">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </div>
-                </div>
-                <hr/>
-                <div class="input-group">
-                    <input type="text" class="form-control" ng-model="newItem" placeholder="Enter the description..."/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit" ng-disabled="!newItem" title="Add">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    </span>
-                </div>
-            </form>
-        </div>
-        <script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
-        <script type="text/javascript" src="./bower_components/angular-resource/angular-resource.min.js"></script>
-        <script type="text/javascript" src="./bower_components/lodash/dist/lodash.min.js"></script>
-        <script type="text/javascript" src="./app/app.js"></script>
-        <script type="text/javascript" src="./app/controllers.js"></script>
-        <script type="text/javascript" src="./app/services.js"></script>
+    <body ng-app="issueTracker">
+       <div class="container">
+       	<!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-tasks"></span> Issue Track</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse" ng-controller="HeaderController">
+            <ul class="nav navbar-nav">
+              <li ng-class="{ active: isActive('/home')}"><a href="/">Home</a></li>
+              <li ng-class="{ active: isActive('/developer')}"><a href="#/developer">Developer</a></li>
+              <li ng-class="{ active: isActive('/bug')}"><a href="#/bug">Bug</a></li>
+              <li ng-class="{ active: isActive('/story')}"><a href="#/story">Story</a></li>
+              <li ng-class="{ active: isActive('/sprint')}"><a href="#/sprint">Sprint</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+      	<ng-view></ng-view>
+       </div> <!-- /container -->
     </body>
+    
+    <script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="./bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="./app/app.js"></script>
+
+    <script type="text/javascript" src="./app/application/app.controller.js"></script>
+    <script type="text/javascript" src="./app/application/header.controller.js"></script>
+
+    <script type="text/javascript" src="./app/bug/bug.controller.js"></script>
+    <script type="text/javascript" src="./app/developer/developer.controller.js"></script>
+    <script type="text/javascript" src="./app/sprint/sprint.controller.js"></script>
+    <script type="text/javascript" src="./app/story/story.controller.js"></script>
+
+    <script type="text/javascript" src="./app/bug/bug.service.js"></script>
+    <script type="text/javascript" src="./app/developer/developer.service.js"></script>
+    <script type="text/javascript" src="./app/sprint/sprint.service.js"></script>
+    <script type="text/javascript" src="./app/story/story.service.js"></script>
 </html>

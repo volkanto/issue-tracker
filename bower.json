@@ -19,6 +19,8 @@
     "angular-block-ui": "^0.2.2",
     "bootstrap-css-only": "~3.2.0",
     "angular-resource": "1.5.0",
-    "lodash": "^4.5.1"
+    "angular-web-notification": "^0.0.64",
+    "angular-ui-router": "^0.2.18",
+    "angular-route": "^1.5.0"
   }
 }

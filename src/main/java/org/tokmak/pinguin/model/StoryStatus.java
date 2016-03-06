@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * @since 0.0.1
  */
 @Entity
-@Table(name="STORYSTATUS")
+@Table(name="STORY_STATUS")
 public class StoryStatus
 {
 	@Id
