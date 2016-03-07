@@ -1,4 +1,4 @@
-angular.module('issueTracker', ['ngRoute', 'ui.bootstrap'])
+angular.module('issueTracker', ['ngRoute', 'ui.bootstrap', 'ngResource'])
 		.config(
 		[ '$routeProvider', function($routeProvider) {
 			$routeProvider.when("/bug", {

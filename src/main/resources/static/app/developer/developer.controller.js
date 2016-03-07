@@ -1,6 +1,6 @@
 angular.module('issueTracker').controller('DeveloperController', DeveloperController);
 
-function DeveloperController($scope) 
+function DeveloperController($scope, Developer) 
 {
 	$scope.developerList = [];
 	$scope.showNewDeveloperPanel = false;
@@ -23,28 +23,29 @@ function DeveloperController($scope)
 					$scope.resetForm();
 				}
 			});
-			
 		} else {
-			var newOne = {id: $scope.id, name: $scope.developer.name};
-			$scope.create(newOne);
-			$scope.developerList.push(newOne);
-			$scope.resetForm();
+			$scope.create({id: null, name: $scope.developer.name});
 		}
 	};
 	
-	$scope.remove = function(argIndex) {
-		// TODO: remove service
-		$scope.developerList.splice(argIndex, 1);
+	$scope.remove = function(argDeveloper) {
+		Developer.remove({ id: argDeveloper.id }, function(response) {
+			angular.forEach($scope.developerList, function(value, key){
+				if(value.id == argDeveloper.id) {
+					$scope.developerList.splice(key, 1);					
+				}
+			});
+		});
 	};
 	
 	$scope.refresh = function() {
-		// TODO: list all developer service
 		$scope.listAll();
 	};
 	
 	$scope.listAll = function() {
-		// TODO: list all developer service
-		$scope.developerList = [{id: 1, name: 'volkan1'}, {id: 2, name: 'volkan2'}, {id: 3, name: 'volkan3'}];
+		Developer.list(function(response) {
+			$scope.developerList = response ? response : [];
+		});
 	};
 	
 	$scope.showEditPanel = function(argItem) {
@@ -53,14 +54,19 @@ function DeveloperController($scope)
 	};
 	
 	$scope.edit = function(argDeveloper) {
-		// TODO: update service
+		Developer.update({ id:argDeveloper.id }, argDeveloper);
 	};
 	
 	$scope.create = function(argDeveloper) {
-		// TODO: create service
+		Developer.create(argDeveloper, function(item) {
+			$scope.developerList.push(item);
+		});
+		$scope.resetForm();
 	};
 	
 	$scope.resetForm = function() {
 		$scope.developer = {};
 	};
+	
+	$scope.listAll(); // initialize list on load
 }
