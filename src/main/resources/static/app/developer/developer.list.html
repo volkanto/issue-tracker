@@ -3,7 +3,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">
-					<button type="button" class="btn btn-success btn-xs" ng-click="openNewPanel()">
+					<button type="button" class="btn btn-success btn-xs" ng-click="togglePanel()">
 						<span class="glyphicon glyphicon-plus"></span> Add New
 					</button> | 
 					<button type="button" class="btn btn-info btn-xs" ng-click="refresh()">
@@ -13,7 +13,7 @@
 			</div>
 			<div class="panel-body">
 				<div ng-if="showNewDeveloperPanel" class="alert alert-warning alert-dismissible" role="alert">
-					<button type="button" class="close" ng-click="closeNewPanel();" data-dismiss="alert"
+					<button type="button" class="close" ng-click="togglePanel();" data-dismiss="alert"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -27,9 +27,9 @@
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Action</th>
+							<th class="col-sm-2">ID</th>
+							<th class="col-sm-8">Name</th>
+							<th class="col-sm-2">Action</th>
 						</tr>
 					</thead>
 					<tbody>

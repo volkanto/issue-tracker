@@ -6,12 +6,13 @@ function DeveloperController($scope, Developer)
 	$scope.showNewDeveloperPanel = false;
 	$scope.developer = {};
 	
-	$scope.openNewPanel = function() {
-		$scope.showNewDeveloperPanel = true;
-	};
-	
-	$scope.closeNewPanel = function() {
-		$scope.showNewDeveloperPanel = false;
+	$scope.togglePanel = function() {
+		if($scope.showNewDeveloperPanel) {
+			$scope.showNewDeveloperPanel = false;
+			$scope.developer = {};
+		} else {
+			$scope.showNewDeveloperPanel = true;
+		}
 	};
 	
 	$scope.createOrEdit = function() {
@@ -60,6 +61,8 @@ function DeveloperController($scope, Developer)
 	$scope.create = function(argDeveloper) {
 		Developer.create(argDeveloper, function(item) {
 			$scope.developerList.push(item);
+		}, function(error) {
+			alert(error.data.message);
 		});
 		$scope.resetForm();
 	};
