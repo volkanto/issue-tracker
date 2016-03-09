@@ -26,39 +26,30 @@
 										<legend>Create New Bug</legend>
 										<div class="form-group">
 											<div class="col-md-5">
-												<input id="textinput" name="textinput" type="text"
+												<input id="textinput" name="textinput" type="text" ng-model="bug.title"
 													placeholder="Title" class="form-control input-md">
 											</div>
 											<div class="col-md-3">
-												<select id="selectbasic" name="selectbasic"
-													class="form-control">
+												<select id="selectbasic" name="selectbasic" ng-model="bug.status.id" class="form-control">
     												<option value="" selected disabled>Status</option>
-													<option value="1">Option one</option>
-													<option value="2">Option two</option>
-													<option value="3">Option three</option>
+													<option ng-repeat="bugStatus in bugStatusList" value="{{bugStatus.id}}" ng-selected="isInSelectedStatus({{bugStatus.id}})">{{bugStatus.description}}</option>
 												</select>
 											</div>
 											<div class="col-md-3">
-												<select id="selectbasic" name="selectbasic"
-													class="form-control">
-													<option value="" selected disabled>Priortiy</option>
-													<option value="1">Option one</option>
-													<option value="2">Option two</option>
-													<option value="3">Option three</option>
+												<select id="selectbasic" name="selectbasic" ng-model="bug.priority.id" class="form-control">
+													<option value="" selected disabled>Priority</option>
+													<option ng-repeat="bugPriority in bugPriorityList" value="{{bugPriority.id}}" ng-selected="isInSelectedPriority({{bugPriority.id}})">{{bugPriority.description}}</option>
 												</select>
 											</div>
 										</div>
 										<div class="form-group">
 											<div class="col-md-5">
-												<textarea class="form-control" rows="3" placeholder="Description"></textarea>
+												<textarea class="form-control" rows="3" ng-model="bug.description" placeholder="Description"></textarea>
 											</div>
 											<div class="col-md-6">
-												<select id="selectbasic" name="selectbasic"
-													class="form-control">
+												<select id="selectbasic" name="selectbasic" ng-model="bug.developer.id" class="form-control">
 													<option value="" selected disabled>Developer</option>
-													<option value="1">Option one</option>
-													<option value="2">Option two</option>
-													<option value="3">Option three</option>
+													<option ng-repeat="developer in developerList" value="{{developer.id}}" ng-selected="isInSelectedDeveloper({{bugDeveloper.id}})">{{developer.name}}</option>
 												</select>
 											</div>
 										</div>
@@ -80,10 +71,11 @@
 					<thead>
 						<tr>
 							<th class="col-sm-1">ID</th>
-							<th class="col-sm-3">Name</th>
+							<th class="col-sm-2">Name</th>
 							<th class="col-sm-5">Description</th>
 							<th class="col-sm-1">Status</th>
 							<th class="col-sm-1">Priority</th>
+							<th class="col-sm-1">Developer</th>
 							<th class="col-sm-1">Action</th>
 						</tr>
 					</thead>
@@ -92,15 +84,13 @@
 							<td align="center" colspan="6">No data to show!</td>
 						</tr>
 						<tr ng-repeat="bug in bugList">
-							<td>{{bug.id}}</td>
-							<td>{{bug.name}}</td>
+							<td>{{bug.issueId}}</td>
+							<td>{{bug.title}}</td>
 							<td>{{bug.description}}</td>
 							<td>{{bug.status.description}}</td>
 							<td>{{bug.priority.description}}</td>
+							<td>{{bug.developer.name}}</td>
 							<td>
-								<button type="button" class="btn btn-danger btn-xs" ng-click="remove(bug)">
-									<span class="glyphicon glyphicon-trash"></span>
-								</button>
 								<button type="button" class="btn btn-info btn-xs" ng-click="showEditPanel(bug)">
 									<span class="glyphicon glyphicon-edit"></span>
 								</button>

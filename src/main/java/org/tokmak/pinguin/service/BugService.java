@@ -1,5 +1,6 @@
 package org.tokmak.pinguin.service;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -74,21 +75,77 @@ public class BugService
 	 */
 	public Bug create(Bug argBug)
 	{
+		this.setStatus(argBug);
+		this.setPriority(argBug);
+		
+		argBug.setIssueId(null);
+		argBug.setCreationDate(Calendar.getInstance().getTime());
+		Bug bug = this.bugRepo.saveAndFlush(argBug);
+		
+		this.assignToDeveloper(argBug.getDeveloper(), bug);
+		
+		return bug;
+	}
+
+	/**
+	 * BugService<br />
+	 *
+	 * @param argDeveloper
+	 * @param argBug
+	 * 
+	 * <b>created at</b> Mar 10, 2016 12:56:11 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void assignToDeveloper(Developer argDeveloper, Bug argBug)
+	{
+		if(argDeveloper != null) {
+			this.assign(Arrays.asList(argBug.getIssueId()), argDeveloper.getId());			
+		}
+	}
+
+	/**
+	 * BugService<br />
+	 *
+	 * @param argBug
+	 * 
+	 * <b>created at</b> Mar 10, 2016 12:52:12 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void setStatus(Bug argBug)
+	{
+		if(argBug.getStatus() == null) {
+			throw new IllegalArgumentException("Choose correct status!");
+		}
+		
 		BugStatus status = this.bugStatusRepo.findOne(argBug.getStatus().getId());
 		if(status == null) {
 			throw new IllegalArgumentException("Choose correct status!");
 		}
 		argBug.setStatus(status);
+	}
+
+	/**
+	 * BugService<br />
+	 *
+	 * @param argBug
+	 * 
+	 * <b>created at</b> Mar 10, 2016 12:52:14 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void setPriority(Bug argBug)
+	{
+		if(argBug.getPriority() == null) {
+			throw new IllegalArgumentException("Choose correct priority!");
+		}
 		
 		BugPriority priority = this.bugPriorityRepo.findOne(argBug.getPriority().getId());
 		if(priority == null) {
 			throw new IllegalArgumentException("Choose correct priority!");
 		}
 		argBug.setPriority(priority);
-		
-		argBug.setIssueId(null);
-		argBug.setCreationDate(Calendar.getInstance().getTime());
-		return this.bugRepo.saveAndFlush(argBug);
 	}
 
 	/**
@@ -139,8 +196,21 @@ public class BugService
 			throw new IllegalArgumentException("Choose correct bug!");			
 		}
 		
-		argBug.setIssueId(argBugId);
-		return this.bugRepo.saveAndFlush(argBug);
+		BugStatus status = this.bugStatusRepo.findOne(argBug.getStatus().getId());
+		if(status == null) {
+			throw new IllegalArgumentException("Choose correct status!");
+		}
+		
+		BugPriority priority = this.bugPriorityRepo.findOne(argBug.getPriority().getId());
+		if(priority == null) {
+			throw new IllegalArgumentException("Choose correct priority!");
+		}
+		
+		bug.setStatus(status);
+		bug.setPriority(priority);
+		bug.setIssueId(argBugId);
+		
+		return this.bugRepo.saveAndFlush(bug);
 	}
 
 	/**

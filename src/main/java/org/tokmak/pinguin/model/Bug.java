@@ -42,6 +42,9 @@ public class Bug
 	@OneToOne
 	private BugPriority priority;
 	
+	@OneToOne
+	private Developer developer;
+	
 	/**
 	 * getIssueId<br />
 	 * @return the issueId
@@ -192,5 +195,29 @@ public class Bug
 	{
 		this.description = argDescription;
 	}
-
+	/**
+	 * getDeveloper<br />
+	 * @return the developer
+	 *
+	 * <b>created at</b> Mar 10, 2016 12:18:13 AM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public Developer getDeveloper()
+	{
+		return this.developer;
+	}
+	/**
+	 * setDeveloper<br />
+	 *
+	 * @param argDeveloper the developer to set
+	 *
+	 * <b>created at</b> Mar 10, 2016 12:18:13 AM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public void setDeveloper(Developer argDeveloper)
+	{
+		this.developer = argDeveloper;
+	}
 }
