@@ -1,6 +1,6 @@
 angular.module('issueTracker').controller('BugController', BugController);
 
-function BugController($scope, Bug, Developer, BugPriority, BugStatus) 
+function BugController($scope, Bug, BugPriority, BugStatus, Developer) 
 {
 	$scope.bugList = [];
 	$scope.showNewBugPanel = true;
