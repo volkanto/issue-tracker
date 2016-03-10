@@ -82,7 +82,7 @@ public class BugService
 		argBug.setCreationDate(Calendar.getInstance().getTime());
 		Bug bug = this.bugRepo.saveAndFlush(argBug);
 		
-		this.assignToDeveloper(argBug.getDeveloper(), bug);
+//		this.assignToDeveloper(argBug.getDeveloper(), bug);
 		
 		return bug;
 	}

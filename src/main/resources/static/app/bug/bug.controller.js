@@ -38,7 +38,6 @@ function BugController($scope, Bug, Developer, BugPriority, BugStatus)
 	
 	$scope.listAll = function() {
 		Bug.list(function(response) {
-			console.log(response);
 			$scope.bugList = response ? response : [];
 		});
 	};
@@ -79,7 +78,7 @@ function BugController($scope, Bug, Developer, BugPriority, BugStatus)
 	
 	$scope.create = function(argBug) {
 		Bug.create(argBug, function(item) {
-			$scope.bugList.push(item);
+			$scope.listAll();
 		}, function(error) {
 			alert(error.data.message);
 		});

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class Developer
 	@Column(name="ACTIVE")
 	private boolean active = true;
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.LAZY)
 	@JoinTable(name = "DEVELOPER_BUG", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
 	private Set<Bug> bugs = new HashSet<Bug>(0);
 	
