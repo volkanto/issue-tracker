@@ -3,7 +3,7 @@ angular.module('issueTracker').controller('DeveloperController', DeveloperContro
 function DeveloperController($scope, Developer) 
 {
 	$scope.developerList = [];
-	$scope.showNewDeveloperPanel = false;
+	$scope.showNewDeveloperPanel = true;
 	$scope.developer = {};
 	
 	$scope.togglePanel = function() {

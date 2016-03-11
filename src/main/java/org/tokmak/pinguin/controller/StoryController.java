@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.tokmak.pinguin.model.Story;
+import org.tokmak.pinguin.model.StoryPoint;
+import org.tokmak.pinguin.model.StoryStatus;
 import org.tokmak.pinguin.service.StoryService;
 
 /**
@@ -134,5 +136,35 @@ public class StoryController
 								  @PathVariable(value = "developerId") Integer argDeveloperId) 
 	{
 		this.storyService.assign(argStoryIds, argDeveloperId);
+	}
+	
+	/**
+	 * StoryController<br />
+	 *
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 11, 2016 11:49:04 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	@RequestMapping(value = "/point/list", method = RequestMethod.GET)
+	public List<StoryPoint> listAllStoryPoint()
+	{
+		return this.storyService.listPoint();
+	}
+	
+	/**
+	 * StoryController<br />
+	 *
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 11, 2016 11:51:21 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	@RequestMapping(value = "/status/list", method = RequestMethod.GET)
+	public List<StoryStatus> listAllStoryStatus()
+	{
+		return this.storyService.listStatus();
 	}
 }

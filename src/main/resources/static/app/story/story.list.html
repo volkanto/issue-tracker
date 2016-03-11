@@ -1,1 +1,105 @@
-story
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<button type="button" class="btn btn-success btn-xs" ng-click="togglePanel()">
+						<span class="glyphicon glyphicon-plus"></span> Add New
+					</button> | 
+					<button type="button" class="btn btn-info btn-xs" ng-click="refresh()">
+						<span class="glyphicon glyphicon-refresh"></span> Refresh List
+					</button>
+				</h3>
+			</div>
+			<div class="panel-body">
+				<div ng-if="showNewStoryPanel" class="alert alert-warning alert-dismissible" role="alert">
+         			<button type="button" class="close" ng-click="togglePanel();" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					
+					<div class="container">
+					    <div class="row clearfix">
+					        <div class="col-xs-11 col-sm-11">
+					            <form class="form-horizontal">
+					                <fieldset>
+										<legend>Create Story</legend>
+										<div class="form-group">
+											<div class="col-md-5">
+												<input id="textinput" name="textinput" type="text" ng-model="story.title"
+													placeholder="Title" class="form-control input-md">
+											</div>
+											<div class="col-md-3">
+												<select id="selectbasic" name="selectbasic" ng-model="story.status.id" class="form-control">
+    												<option value="" selected>Choose Status</option>
+													<option ng-repeat="storyStatus in storyStatusList" value="{{storyStatus.id}}" ng-selected="isInSelectedStatus({{storyStatus.id}})">{{storyStatus.description}}</option>
+												</select>
+											</div>
+											<div class="col-md-3">
+												<select id="selectbasic" name="selectbasic" ng-disabled="story.status.id != 2" ng-model="story.point.id" class="form-control">
+													<option value="" selected disabled>Point</option>
+													<option ng-repeat="storyPoint in storyPointList" value="{{storyPoint.id}}" ng-selected="isInSelectedPoint({{storyPoint.id}})">{{storyPoint.value}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-5">
+												<textarea class="form-control" rows="3" ng-model="story.description" placeholder="Description"></textarea>
+											</div>
+											<div class="col-md-6">
+												<select id="selectbasic" name="selectbasic" ng-model="story.developer.id" class="form-control">
+													<option value="" selected disabled>Developer</option>
+													<option ng-repeat="developer in developerList" value="{{developer.id}}" ng-selected="isInSelectedDeveloper({{developer.id}})">{{developer.name}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success btn-xs" ng-click="createOrEdit()">
+													<span class="glyphicon glyphicon-floppy-disk"></span> Save
+												</button>
+											</div>
+										</div>
+									</fieldset>
+				                </form>
+			                </div>
+		                </div>
+	                </div>
+				</div>
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="col-sm-1">ID</th>
+							<th class="col-sm-2">Title</th>
+							<th class="col-sm-5">Description</th>
+							<th class="col-sm-1">Status</th>
+							<th class="col-sm-1">Point</th>
+							<th class="col-sm-1">Developer</th>
+							<th class="col-sm-1">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="storyList == 0">
+							<td align="center" colspan="6">No data to show!</td>
+						</tr>
+						<tr ng-repeat="story in storyList">
+							<td>{{story.issueId}}</td>
+							<td>{{story.title}}</td>
+							<td>{{story.description}}</td>
+							<td>{{story.status.description}}</td>
+							<td>{{story.point.value}}</td>
+							<td>{{story.developer.name}}</td>
+							<td>
+								<button type="button" class="btn btn-info btn-xs" ng-click="showEditPanel(story)">
+									<span class="glyphicon glyphicon-edit"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+

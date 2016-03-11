@@ -49,7 +49,7 @@
 											<div class="col-md-6">
 												<select id="selectbasic" name="selectbasic" ng-model="bug.developer.id" class="form-control">
 													<option value="" selected disabled>Developer</option>
-													<option ng-repeat="developer in developerList" value="{{developer.id}}" ng-selected="isInSelectedDeveloper({{bugDeveloper.id}})">{{developer.name}}</option>
+													<option ng-repeat="developer in developerList" value="{{developer.id}}" ng-selected="isInSelectedDeveloper({{developer.id}})">{{developer.name}}</option>
 												</select>
 											</div>
 										</div>
@@ -71,7 +71,7 @@
 					<thead>
 						<tr>
 							<th class="col-sm-1">ID</th>
-							<th class="col-sm-2">Name</th>
+							<th class="col-sm-2">Title</th>
 							<th class="col-sm-5">Description</th>
 							<th class="col-sm-1">Status</th>
 							<th class="col-sm-1">Priority</th>

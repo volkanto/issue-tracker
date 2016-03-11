@@ -77,20 +77,29 @@ public class BugService
 	{
 		this.setStatus(argBug);
 		this.setPriority(argBug);
+		this.setDeveloper(argBug);
 		
 		argBug.setIssueId(null);
 		argBug.setCreationDate(Calendar.getInstance().getTime());
 		
+		return this.bugRepo.saveAndFlush(argBug);
+	}
+
+	/**
+	 * BugService<br />
+	 *
+	 * @param argBug
+	 * 
+	 * <b>created at</b> Mar 12, 2016 12:35:40 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void setDeveloper(Bug argBug)
+	{
 		if(argBug.getDeveloper() != null && argBug.getDeveloper().getId() != null) {
 			Developer developer = this.developerService.findBy(argBug.getDeveloper().getId());
 			argBug.setDeveloper(developer);
 		}
-//		Bug bug = this.bugRepo.saveAndFlush(argBug);
-		
-//		this.assignToDeveloper(argBug.getDeveloper(), bug);
-		
-//		return bug;
-		return this.bugRepo.saveAndFlush(argBug);
 	}
 
 	/**
@@ -103,6 +112,7 @@ public class BugService
 	 * @since 0.0.1
 	 * @author Volkan Tokmak
 	 */
+	@SuppressWarnings("unused")
 	private void assignToDeveloper(Developer argDeveloper, Bug argBug)
 	{
 		if(argDeveloper != null) {

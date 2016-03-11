@@ -74,21 +74,77 @@ public class StoryService
 	 */
 	public Story create(Story argStory)
 	{
+		this.setStatus(argStory);
+		this.setPoint(argStory);
+		this.setDeveloper(argStory);
+		
+		argStory.setIssueId(null);
+		argStory.setCreationDate(Calendar.getInstance().getTime());
+		
+		return this.storyRepo.saveAndFlush(argStory);
+	}
+
+	/**
+	 * StoryService<br />
+	 *
+	 * @param argStory
+	 * 
+	 * <b>created at</b> Mar 12, 2016 12:36:13 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void setDeveloper(Story argStory)
+	{
+		if(argStory.getDeveloper() != null && argStory.getDeveloper().getId() != null) {
+			Developer developer = this.developerService.findBy(argStory.getDeveloper().getId());
+			argStory.setDeveloper(developer);
+		}
+	}
+
+	/**
+	 * StoryService<br />
+	 *
+	 * @param argStory
+	 * 
+	 * <b>created at</b> Mar 12, 2016 12:34:38 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void setPoint(Story argStory)
+	{
+//		if(argStory.getPoint() == null) {
+//			throw new IllegalArgumentException("Choose correct point!");
+//		}
+		
+		if(argStory.getPoint() != null) {
+			StoryPoint point = this.storyPointRepo.findOne(argStory.getPoint().getId());
+			if(point == null) {
+				throw new IllegalArgumentException("Choose correct point!");
+			}
+			argStory.setPoint(point);	
+		}
+	}
+
+	/**
+	 * StoryService<br />
+	 *
+	 * @param argStory
+	 * 
+	 * <b>created at</b> Mar 12, 2016 12:33:40 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void setStatus(Story argStory)
+	{
+		if(argStory.getStatus() == null) {
+			throw new IllegalArgumentException("Choose correct status!");
+		}
+		
 		StoryStatus status = this.storyStatusRepo.findOne(argStory.getStatus().getId());
 		if(status == null) {
 			throw new IllegalArgumentException("Choose correct status!");
 		}
 		argStory.setStatus(status);
-		
-		StoryPoint point = this.storyPointRepo.findOne(argStory.getPoint().getId());
-		if(point == null) {
-			throw new IllegalArgumentException("Choose correct point!");
-		}
-		argStory.setPoint(point);
-		
-		argStory.setIssueId(null);
-		argStory.setCreationDate(Calendar.getInstance().getTime());
-		return this.storyRepo.saveAndFlush(argStory);
 	}
 
 	/**
@@ -171,5 +227,33 @@ public class StoryService
 		});
 		
 		developer.setStories(storyListToAssign);
+	}
+
+	/**
+	 * StoryService<br />
+	 *
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 11, 2016 11:49:31 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public List<StoryPoint> listPoint()
+	{
+		return this.storyPointRepo.findAll();
+	}
+
+	/**
+	 * StoryService<br />
+	 *
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 11, 2016 11:51:35 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public List<StoryStatus> listStatus()
+	{
+		return this.storyStatusRepo.findAll();
 	}
 }

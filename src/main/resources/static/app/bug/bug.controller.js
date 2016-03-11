@@ -57,7 +57,7 @@ function BugController($scope, Bug, BugPriority, BugStatus, Developer)
 	$scope.showEditPanel = function(argItem) {
 		$scope.showNewBugPanel = true;
 		$scope.bug = {
-				id: argItem.id, 
+				issueId: argItem.issueId, 
 				title: argItem.title,
 				description: argItem.description,
 				status : {
@@ -115,5 +115,4 @@ function BugController($scope, Bug, BugPriority, BugStatus, Developer)
 	};
 	
 	$scope.init();
-	
 }

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -41,6 +42,9 @@ public class Story
 	
 	@OneToOne
 	private StoryStatus status;
+	
+	@ManyToOne
+	private Developer developer;
 
 	/**
 	 * getIssueId<br />
@@ -202,5 +206,33 @@ public class Story
 	public void setStatus(StoryStatus argStatus)
 	{
 		this.status = argStatus;
+	}
+
+	/**
+	 * Story<br />
+	 *
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 11, 2016 10:07:25 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public Developer getDeveloper()
+	{
+		return this.developer;
+	}
+
+	/**
+	 * Story<br />
+	 *
+	 * @param argDeveloper
+	 * 
+	 * <b>created at</b> Mar 11, 2016 10:07:28 PM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public void setDeveloper(Developer argDeveloper)
+	{
+		this.developer = argDeveloper;
 	}
 }

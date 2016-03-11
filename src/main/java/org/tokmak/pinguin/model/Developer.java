@@ -42,7 +42,7 @@ public class Developer
 	@JoinTable(name = "DEVELOPER_BUG", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
 	private Set<Bug> bugs = new HashSet<Bug>(0);
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.LAZY)
 	@JoinTable(name = "DEVELOPER_STORY", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
 	private Set<Story> stories = new HashSet<Story>(0);
 	
