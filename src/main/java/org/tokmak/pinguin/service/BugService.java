@@ -80,11 +80,17 @@ public class BugService
 		
 		argBug.setIssueId(null);
 		argBug.setCreationDate(Calendar.getInstance().getTime());
-		Bug bug = this.bugRepo.saveAndFlush(argBug);
 		
-		this.assignToDeveloper(argBug.getDeveloper(), bug);
+		if(argBug.getDeveloper() != null && argBug.getDeveloper().getId() != null) {
+			Developer developer = this.developerService.findBy(argBug.getDeveloper().getId());
+			argBug.setDeveloper(developer);
+		}
+//		Bug bug = this.bugRepo.saveAndFlush(argBug);
 		
-		return bug;
+//		this.assignToDeveloper(argBug.getDeveloper(), bug);
+		
+//		return bug;
+		return this.bugRepo.saveAndFlush(argBug);
 	}
 
 	/**
