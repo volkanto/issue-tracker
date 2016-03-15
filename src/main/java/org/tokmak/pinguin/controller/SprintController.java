@@ -66,7 +66,7 @@ public class SprintController
 	 * @since 0.0.1
 	 * @author Volkan Tokmak
 	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Sprint sprintInformation(@PathVariable(value = "id") Integer argSprintId)
 	{
 		return this.sprintService.getInformation(argSprintId);
@@ -86,7 +86,23 @@ public class SprintController
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public Sprint updateSprint(@RequestBody Sprint argSprint, @PathVariable(value = "id") Integer argSprintId)
 	{
-		argSprint.setId(argSprintId);
-		return null;
+		return this.sprintService.update(argSprintId, argSprint);
+	}
+	
+	/**
+	 * SprintController<br />
+	 *
+	 * @param argStoryIds
+	 * @param argSprintId
+	 * 
+	 * <b>created at</b> Mar 13, 2016 1:36:24 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	@RequestMapping(value = "/{sprintId}/assign/story/{storyIds}", method = RequestMethod.POST)
+	public void assignToSprint(@PathVariable(value = "storyIds") List<Integer> argStoryIds, 
+							   @PathVariable(value = "sprintId") Integer argSprintId) 
+	{
+		this.sprintService.assign(argSprintId, argStoryIds);
 	}
 }
