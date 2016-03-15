@@ -1,1 +1,102 @@
-sprint
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<button type="button" class="btn btn-success btn-xs" ng-click="togglePanel()">
+						<span class="glyphicon glyphicon-plus"></span> Add New
+					</button> | 
+					<button type="button" class="btn btn-info btn-xs" ng-click="refresh()">
+						<span class="glyphicon glyphicon-refresh"></span> Refresh List
+					</button>
+				</h3>
+			</div>
+			<div class="panel-body">
+				<div ng-if="showNewBugPanel" class="alert alert-warning alert-dismissible" role="alert">
+         			<button type="button" class="close" ng-click="togglePanel();" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					
+					<div class="container">
+					    <div class="row clearfix">
+					        <div class="col-xs-11 col-sm-11">
+					            <form class="form-horizontal">
+					                <fieldset>
+										<legend>Create New Bug</legend>
+										<div class="form-group">
+											<div class="col-md-5">
+												<input id="textinput" name="textinput" type="text" ng-model="bug.title"
+													placeholder="Title" class="form-control input-md">
+											</div>
+											<div class="col-md-3">
+												<select id="selectbasic" name="selectbasic" ng-model="bug.status.id" class="form-control">
+    												<option value="" selected disabled>Status</option>
+													<option ng-repeat="bugStatus in bugStatusList" value="{{bugStatus.id}}" ng-selected="isInSelectedStatus({{bugStatus.id}})">{{bugStatus.description}}</option>
+												</select>
+											</div>
+											<div class="col-md-3">
+												<select id="selectbasic" name="selectbasic" ng-model="bug.priority.id" class="form-control">
+													<option value="" selected disabled>Priority</option>
+													<option ng-repeat="bugPriority in bugPriorityList" value="{{bugPriority.id}}" ng-selected="isInSelectedPriority({{bugPriority.id}})">{{bugPriority.description}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-5">
+												<textarea class="form-control" rows="3" ng-model="bug.description" placeholder="Description"></textarea>
+											</div>
+											<div class="col-md-6">
+												<select id="selectbasic" name="selectbasic" ng-model="bug.developer.id" class="form-control">
+													<option value="" selected disabled>Developer</option>
+													<option ng-repeat="developer in developerList" value="{{developer.id}}" ng-selected="isInSelectedDeveloper({{developer.id}})">{{developer.name}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success btn-xs" ng-click="createOrEdit()">
+													<span class="glyphicon glyphicon-floppy-disk"></span> Save
+												</button>
+											</div>
+										</div>
+									</fieldset>
+				                </form>
+			                </div>
+		                </div>
+	                </div>
+				</div>
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="col-sm-1">ID</th>
+							<th class="col-sm-2">Title</th>
+							<th class="col-sm-5">Description</th>
+							<th class="col-sm-1">Start Date</th>
+							<th class="col-sm-1">End Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="bugList == 0">
+							<td align="center" colspan="6">No data to show!</td>
+						</tr>
+						<tr ng-repeat="sprint in sprintList">
+							<td>{{sprint.sprintId}}</td>
+							<td>{{sprint.title}}</td>
+							<td>{{sprint.description}}</td>
+							<td>{{sprint.startDate}}</td>
+							<td>{{sprint.endDate}}</td>
+							<td>
+								<button type="button" class="btn btn-info btn-xs" ng-click="showEditPanel(bug)">
+									<span class="glyphicon glyphicon-edit"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+

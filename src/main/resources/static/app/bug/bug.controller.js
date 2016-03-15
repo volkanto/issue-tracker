@@ -67,13 +67,15 @@ function BugController($scope, Bug, BugPriority, BugStatus, Developer)
 					id : argItem.priority.id
 				},
 				developer : {
-					id : argItem.developer.id
+					id : argItem.developer != null ? argItem.developer.id : null
 				}
 		};
 	};
 	
 	$scope.edit = function(argBug) {
-		Bug.update({ id: argBug.issueId }, argBug);
+		Bug.update({ id: argBug.issueId }, argBug, function(item) {
+			$scope.listAll();
+		});
 	};
 	
 	$scope.create = function(argBug) {

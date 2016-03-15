@@ -77,12 +77,17 @@ public class BugService
 	{
 		this.setStatus(argBug);
 		this.setPriority(argBug);
-		this.setDeveloper(argBug);
 		
 		argBug.setIssueId(null);
 		argBug.setCreationDate(Calendar.getInstance().getTime());
 		
-		return this.bugRepo.saveAndFlush(argBug);
+		Bug newBug = this.bugRepo.saveAndFlush(argBug);
+		if(argBug.getDeveloper() != null && argBug.getDeveloper().getId() != null) {
+			Developer developer = this.developerService.findBy(argBug.getDeveloper().getId());
+			this.assign(Arrays.asList(newBug.getIssueId()), developer.getId());
+		}
+		
+		return newBug;
 	}
 
 	/**
@@ -211,21 +216,17 @@ public class BugService
 		if(bug == null) {
 			throw new IllegalArgumentException("Choose correct bug!");			
 		}
-		
-		BugStatus status = this.bugStatusRepo.findOne(argBug.getStatus().getId());
-		if(status == null) {
-			throw new IllegalArgumentException("Choose correct status!");
-		}
-		
-		BugPriority priority = this.bugPriorityRepo.findOne(argBug.getPriority().getId());
-		if(priority == null) {
-			throw new IllegalArgumentException("Choose correct priority!");
-		}
-		
-		bug.setStatus(status);
-		bug.setPriority(priority);
 		bug.setIssueId(argBugId);
+		bug.setStatus(argBug.getStatus());
+		bug.setPriority(argBug.getPriority());
+		bug.setDeveloper(argBug.getDeveloper());
+		bug.setDescription(argBug.getDescription());
+		bug.setTitle(argBug.getTitle());
 		
+		this.setStatus(bug);
+		this.setPriority(bug);
+		this.setDeveloper(bug);
+
 		return this.bugRepo.saveAndFlush(bug);
 	}
 
@@ -317,5 +318,6 @@ public class BugService
 		});
 		
 		developer.setBugs(bugListToAssign);
+		this.developerService.update(argDeveloperId, developer);
 	}
 }

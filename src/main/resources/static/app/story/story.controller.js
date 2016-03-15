@@ -72,7 +72,9 @@ function StoryController($scope, Story, StoryPoint, StoryStatus, Developer)
 	};
 	
 	$scope.edit = function(argStory) {
-		Story.update({ id: argStory.issueId }, argStory);
+		Story.update({ id: argStory.issueId }, argStory, function(item) {
+			$scope.listAll();
+		});
 	};
 	
 	$scope.create = function(argStory) {

@@ -16,6 +16,12 @@ angular.module('issueTracker', ['ngRoute', 'ui.bootstrap', 'ngResource'])
 			}).when("/developer/:id", {
 				templateUrl : "/app/developer/developer.list.html",
 				controller : "DeveloperController"
+			}).when("/dev/bug", {
+				templateUrl : "/app/developer/bug/developer.bug.html",
+				controller : "DeveloperBugController"
+			}).when("/dev/story", {
+				templateUrl : "/app/developer/story/developer.story.html",
+				controller : "DeveloperStoryController"
 			}).when("/home", {
 				templateUrl : "/app/application/home.html",
 				controller : "AppController"

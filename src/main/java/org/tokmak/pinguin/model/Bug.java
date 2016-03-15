@@ -7,9 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -43,7 +43,7 @@ public class Bug
 	@OneToOne
 	private BugPriority priority;
 	
-	@ManyToOne
+	@Transient
 	private Developer developer;
 	
 	/**

@@ -1,5 +1,6 @@
 package org.tokmak.pinguin.service;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -76,12 +77,17 @@ public class StoryService
 	{
 		this.setStatus(argStory);
 		this.setPoint(argStory);
-		this.setDeveloper(argStory);
 		
 		argStory.setIssueId(null);
 		argStory.setCreationDate(Calendar.getInstance().getTime());
 		
-		return this.storyRepo.saveAndFlush(argStory);
+		Story newStory = this.storyRepo.saveAndFlush(argStory);
+		if(argStory.getDeveloper() != null && argStory.getDeveloper().getId() != null) {
+			Developer developer = this.developerService.findBy(argStory.getDeveloper().getId());
+			this.assign(Arrays.asList(newStory.getIssueId()), developer.getId());
+		}
+		
+		return newStory;
 	}
 
 	/**
@@ -116,7 +122,7 @@ public class StoryService
 //			throw new IllegalArgumentException("Choose correct point!");
 //		}
 		
-		if(argStory.getPoint() != null) {
+		if(argStory.getStatus().getId() == 2 && argStory.getPoint() != null) {
 			StoryPoint point = this.storyPointRepo.findOne(argStory.getPoint().getId());
 			if(point == null) {
 				throw new IllegalArgumentException("Choose correct point!");
@@ -195,8 +201,21 @@ public class StoryService
 			throw new IllegalArgumentException("Choose correct story!");			
 		}
 		
-		argStory.setIssueId(argStoryId);
-		return this.storyRepo.saveAndFlush(argStory);
+		story.setIssueId(argStoryId);
+		story.setStatus(argStory.getStatus());
+		story.setDeveloper(argStory.getDeveloper());
+		if(argStory.getPoint() != null && argStory.getPoint().getId() != null) {
+			story.setPoint(argStory.getPoint());	
+		}
+		story.setDescription(argStory.getDescription());
+		story.setTitle(argStory.getTitle());
+		
+		
+		this.setStatus(story);
+		this.setDeveloper(story);
+		this.setPoint(story);
+		
+		return this.storyRepo.saveAndFlush(story);
 	}
 
 	/**
@@ -226,9 +245,10 @@ public class StoryService
 			storyListToAssign.add(story);
 		});
 		
-		developer.setStories(storyListToAssign);
+		developer.getStories().addAll(storyListToAssign);
+		this.developerService.update(argDeveloperId, developer);
 	}
-
+	
 	/**
 	 * StoryService<br />
 	 *
@@ -255,5 +275,20 @@ public class StoryService
 	public List<StoryStatus> listStatus()
 	{
 		return this.storyStatusRepo.findAll();
+	}
+	
+	/**
+	 * StoryService<br />
+	 *
+	 * @param argStoryIdList
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 13, 2016 1:24:19 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public List<Object[]> getDeveloperStoryPointList(List<Integer> argStoryIdList)
+	{
+		return this.storyRepo.findStoryPointOfDevelopers(argStoryIdList);
 	}
 }
