@@ -1,7 +1,6 @@
 package org.tokmak.pinguin.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -38,13 +37,13 @@ public class Developer
 	@Column(name="ACTIVE")
 	private boolean active = true;
 	
-	@OneToMany(fetch=FetchType.LAZY)
-	@JoinTable(name = "DEVELOPER_BUG", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
-	private Set<Bug> bugs = new HashSet<Bug>(0);
+	@OneToMany(targetEntity=Bug.class, mappedBy="developer", fetch=FetchType.LAZY)
+	@JsonManagedReference(value="developer-bugs")
+	private List<Bug> bugs;
 	
-	@OneToMany(fetch=FetchType.LAZY)
-	@JoinTable(name = "DEVELOPER_STORY", joinColumns = { @JoinColumn(name = "DEVELOPERID") }, inverseJoinColumns = { @JoinColumn(name = "ISSUEID") })
-	private Set<Story> stories = new HashSet<Story>(0);
+	@OneToMany(targetEntity=Story.class, mappedBy="developer", fetch=FetchType.LAZY)
+	@JsonManagedReference(value="developer-stories")
+	private List<Story> stories;
 	
 	/**
 	 * getId<br />
@@ -125,11 +124,11 @@ public class Developer
 	 * getBugs<br />
 	 * @return the bugs
 	 *
-	 * <b>created at</b> Mar 6, 2016 5:47:54 PM
+	 * <b>created at</b> Mar 15, 2016 10:01:45 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public Set<Bug> getBugs()
+	public List<Bug> getBugs()
 	{
 		return this.bugs;
 	}
@@ -138,11 +137,11 @@ public class Developer
 	 *
 	 * @param argBugs the bugs to set
 	 *
-	 * <b>created at</b> Mar 6, 2016 5:47:54 PM
+	 * <b>created at</b> Mar 15, 2016 10:01:45 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public void setBugs(Set<Bug> argBugs)
+	public void setBugs(List<Bug> argBugs)
 	{
 		this.bugs = argBugs;
 	}
@@ -150,11 +149,11 @@ public class Developer
 	 * getStories<br />
 	 * @return the stories
 	 *
-	 * <b>created at</b> Mar 6, 2016 5:47:54 PM
+	 * <b>created at</b> Mar 15, 2016 11:47:04 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public Set<Story> getStories()
+	public List<Story> getStories()
 	{
 		return this.stories;
 	}
@@ -163,11 +162,11 @@ public class Developer
 	 *
 	 * @param argStories the stories to set
 	 *
-	 * <b>created at</b> Mar 6, 2016 5:47:54 PM
+	 * <b>created at</b> Mar 15, 2016 11:47:04 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public void setStories(Set<Story> argStories)
+	public void setStories(List<Story> argStories)
 	{
 		this.stories = argStories;
 	}

@@ -1,10 +1,9 @@
 package org.tokmak.pinguin.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -84,7 +83,8 @@ public class BugService
 		Bug newBug = this.bugRepo.saveAndFlush(argBug);
 		if(argBug.getDeveloper() != null && argBug.getDeveloper().getId() != null) {
 			Developer developer = this.developerService.findBy(argBug.getDeveloper().getId());
-			this.assign(Arrays.asList(newBug.getIssueId()), developer.getId());
+			newBug.setDeveloper(developer);
+//			this.assign(Arrays.asList(newBug.getIssueId()), developer.getId());
 		}
 		
 		return newBug;
@@ -307,17 +307,33 @@ public class BugService
 			throw new IllegalArgumentException("Choose correct developer!");			
 		}
 		
-		Set<Bug> bugListToAssign = new HashSet<>();
+		List<Bug> bugListToAssign = new ArrayList<>();
 		argBugIdList.stream().forEach(itemId -> {
 			Bug bug = this.findBy(itemId);
 			if(bug == null) {
 				throw new IllegalArgumentException("Choose correct bugs!");	
 			}
-			
+			bug.setDeveloper(developer);
+			this.update(bug.getIssueId(), bug);
 			bugListToAssign.add(bug);
 		});
 		
 		developer.setBugs(bugListToAssign);
 		this.developerService.update(argDeveloperId, developer);
+	}
+
+	/**
+	 * BugService<br />
+	 *
+	 * @param argDeveloperId
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 16, 2016 1:28:24 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public List<Bug> getBugsBy(Integer argDeveloperId)
+	{
+		return this.bugRepo.getBugsBy(argDeveloperId);
 	}
 }

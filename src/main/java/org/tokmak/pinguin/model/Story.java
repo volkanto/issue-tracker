@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -38,13 +41,22 @@ public class Story
 	private Date creationDate;
 	
 	@OneToOne
+	@JoinColumn(name="STORYPOINTID")
 	private StoryPoint point;
 	
 	@OneToOne
+	@JoinColumn(name="STORYSTATUSID")
 	private StoryStatus status;
 	
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="DEVELOPERID")
+	@JsonBackReference(value="developer-stories")
 	private Developer developer;
+	
+	@ManyToOne
+	@JoinColumn(name="SPRINTID")
+	@JsonBackReference(value="sprint-stories")
+	private Sprint sprint;
 
 	/**
 	 * getIssueId<br />
@@ -234,5 +246,32 @@ public class Story
 	public void setDeveloper(Developer argDeveloper)
 	{
 		this.developer = argDeveloper;
+	}
+
+	/**
+	 * getSprint<br />
+	 * @return the sprint
+	 *
+	 * <b>created at</b> Mar 15, 2016 11:49:34 PM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public Sprint getSprint()
+	{
+		return this.sprint;
+	}
+
+	/**
+	 * setSprint<br />
+	 *
+	 * @param argSprint the sprint to set
+	 *
+	 * <b>created at</b> Mar 15, 2016 11:49:34 PM
+	 * @author Volkan Tokmak
+	 * @since 0.0.1
+	 */
+	public void setSprint(Sprint argSprint)
+	{
+		this.sprint = argSprint;
 	}
 }

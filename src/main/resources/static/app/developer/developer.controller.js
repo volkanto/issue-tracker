@@ -3,8 +3,11 @@ angular.module('issueTracker').controller('DeveloperController', DeveloperContro
 function DeveloperController($scope, Developer) 
 {
 	$scope.developerList = [];
-	$scope.showNewDeveloperPanel = true;
 	$scope.developer = {};
+	$scope.developerBugList = [];
+	$scope.developerStoryList = [];
+	$scope.searchDeveloperBug = {};
+	$scope.searchDeveloperStory = {};
 	
 	$scope.togglePanel = function() {
 		if($scope.showNewDeveloperPanel) {
@@ -71,5 +74,33 @@ function DeveloperController($scope, Developer)
 		$scope.developer = {};
 	};
 	
-	$scope.listAll(); // initialize list on load
+	$scope.listDeveloperBugs = function() {
+		if($scope.searchDeveloperBug.id !== undefined) {
+			Developer.get({ id: $scope.searchDeveloperBug.id }, function(response) {
+				$scope.developerBugList = response ? response.bugs : [];
+			}, function(error) {
+				alert(error.message);
+			});
+		} else {
+			alert("Choose correct developer!")
+		}
+	};
+	
+	$scope.listDeveloperStories = function() {
+		if($scope.searchDeveloperStory.id !== undefined) {
+			Developer.get({ id: $scope.searchDeveloperStory.id }, function(response) {
+				$scope.developerStoryList = response ? response.stories : [];
+			}, function(error) {
+				alert(error.message);
+			});	
+		} else {
+			alert("Choose correct developer!")
+		}
+	};
+	
+	$scope.init = function() {
+		$scope.listAll(); 	
+	};
+	
+	$scope.init();
 }

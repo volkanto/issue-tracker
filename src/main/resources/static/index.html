@@ -4,7 +4,20 @@
         <link rel="stylesheet" href="./bower_components/bootstrap-css-only/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="./bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
         <title>Simple Issue Tracker Application</title>
-    </head>
+		<style>
+		.full button span {
+			background-color: limegreen;
+			border-radius: 32px;
+			color: black;
+		}
+		
+		.partially button span {
+			background-color: orange;
+			border-radius: 32px;
+			color: black;
+		}
+		</style>
+	</head>
     <body ng-app="issueTracker">
        <div class="container">
        	<!-- Static navbar -->
@@ -23,12 +36,9 @@
             <ul class="nav navbar-nav">
               <li ng-class="{ active: isActive('/home')}"><a href="/">Home</a></li>
               <li ng-class="{ active: isActive('/developer')}"><a href="#/developer">Developer</a></li>
-              <li ng-class="{ active: isActive('/dev/bug')}"><a href="#/dev/bug">Developer Bugs</a></li>
-              <li ng-class="{ active: isActive('/dev/story')}"><a href="#/dev/story">Developer Stories</a></li>
               <li ng-class="{ active: isActive('/bug')}"><a href="#/bug">Bug</a></li>
               <li ng-class="{ active: isActive('/story')}"><a href="#/story">Story</a></li>
               <li ng-class="{ active: isActive('/sprint')}"><a href="#/sprint">Sprint</a></li>
-              <li ng-class="{ active: isActive('/sprint/story')}"><a href="#/sprint/story">Sprint Story</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -40,6 +50,7 @@
     <script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="./bower_components/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="./bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="./bower_components/angular-resource/angular-resource.min.js"></script>
     
     <script type="text/javascript" src="./app/app.js"></script>
@@ -49,8 +60,6 @@
 
     <script type="text/javascript" src="./app/bug/bug.controller.js"></script>
     <script type="text/javascript" src="./app/developer/developer.controller.js"></script>
-    <script type="text/javascript" src="./app/developer/bug/developer.bug.controller.js"></script>
-    <script type="text/javascript" src="./app/developer/story/developer.story.controller.js"></script>
     <script type="text/javascript" src="./app/sprint/sprint.controller.js"></script>
     <script type="text/javascript" src="./app/story/story.controller.js"></script>
 

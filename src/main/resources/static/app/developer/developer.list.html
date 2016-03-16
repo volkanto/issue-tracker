@@ -1,57 +1,127 @@
 <div class="row">
 	<div class="col-sm-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					<button type="button" class="btn btn-success btn-xs" ng-click="togglePanel()">
-						<span class="glyphicon glyphicon-plus"></span> Add New
-					</button> | 
-					<button type="button" class="btn btn-info btn-xs" ng-click="refresh()">
-						<span class="glyphicon glyphicon-refresh"></span> Refresh List
-					</button>
-				</h3>
-			</div>
-			<div class="panel-body">
-				<div ng-if="showNewDeveloperPanel" class="alert alert-warning alert-dismissible" role="alert">
-					<button type="button" class="close" ng-click="togglePanel();" data-dismiss="alert"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<input type="text" class="form-control" placeholder="Enter developer name" ng-model="developer.name" />
-					<br/>
-					<button type="button" class="btn btn-success btn-xs" ng-click="createOrEdit()">
-						<span class="glyphicon glyphicon-floppy-disk"></span> Save
-					</button>
+		<uib-tabset active="activeForm"> 
+			<uib-tab index="0" heading="Create New Developer / List">
+				<div class="panel-body">
+					<div class="alert alert-warning alert-dismissible" role="alert">
+						<legend>Create Developer</legend>
+						<fieldset>
+							<input type="text" class="form-control" placeholder="Enter developer name" ng-model="developer.name" />
+							<br/>
+							<button type="button" class="btn btn-success btn-xs" ng-click="createOrEdit()">
+								<span class="glyphicon glyphicon-floppy-disk"></span> Save
+							</button>
+							<button type="button" class="btn btn-danger btn-xs" ng-click="resetForm()">
+								<span class="glyphicon glyphicon-refresh"></span> Reset
+							</button>
+						</fieldset>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th class="col-sm-2">ID</th>
+									<th class="col-sm-8">Name</th>
+									<th class="col-sm-2">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-if="developerList.length == 0">
+									<td align="center" colspan="3">No data to show!</td>
+								</tr>
+								<tr ng-repeat="developer in developerList">
+									<td>{{developer.id}}</td>
+									<td>{{developer.name}}</td>
+									<td>
+										<button type="button" class="btn btn-danger btn-xs" ng-click="remove(developer)">
+											<span class="glyphicon glyphicon-trash"></span>
+										</button>
+										<button type="button" class="btn btn-info btn-xs" ng-click="showEditPanel(developer)">
+											<span class="glyphicon glyphicon-edit"></span>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th class="col-sm-2">ID</th>
-							<th class="col-sm-8">Name</th>
-							<th class="col-sm-2">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-if="developerList.length == 0">
-							<td align="center" colspan="3">No data to show!</td>
-						</tr>
-						<tr ng-repeat="developer in developerList">
-							<td>{{developer.id}}</td>
-							<td>{{developer.name}}</td>
-							<td>
-								<button type="button" class="btn btn-danger btn-xs" ng-click="remove(developer)">
-									<span class="glyphicon glyphicon-trash"></span>
-								</button>
-								<button type="button" class="btn btn-info btn-xs" ng-click="showEditPanel(developer)">
-									<span class="glyphicon glyphicon-edit"></span>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+			</uib-tab>
+			<uib-tab index="1" heading="Developer Bug List">
+				<div class="panel-body">
+					<div class="alert alert-warning alert-dismissible" role="alert">
+						<div class="input-group">
+							<select id="selectbasic" name="selectbasic"
+								ng-model="searchDeveloperBug.id" class="form-control">
+								<option value="" selected>Choose Developer</option>
+								<option ng-repeat="developer in developerList" value="{{developer.id}}">{{developer.name}}</option>
+							</select> 
+							<span class="input-group-btn">
+								<button class="btn btn-info" ng-click="listDeveloperBugs()" type="button">Search!</button>
+							</span>
+						</div>
+					</div>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th class="col-sm-1">ID</th>
+								<th class="col-sm-3">Title</th>
+								<th class="col-sm-5">Description</th>
+								<th class="col-sm-1">Status</th>
+								<th class="col-sm-1">Priority</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-if="developerBugList.length == 0">
+								<td align="center" colspan="5">No data to show!</td>
+							</tr>
+							<tr ng-repeat="bug in developerBugList">
+								<td>{{bug.issueId}}</td>
+								<td>{{bug.title}}</td>
+								<td>{{bug.description}}</td>
+								<td>{{bug.status.description}}</td>
+								<td>{{bug.priority.description}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</uib-tab>
+			<uib-tab index="2" heading="Developer Story List">
+				<div class="panel-body">
+					<div class="alert alert-warning alert-dismissible" role="alert">
+						<div class="input-group">
+							<select id="selectbasic" name="selectbasic"
+								ng-model="searchDeveloperStory.id" class="form-control">
+								<option value="" selected>Choose Developer</option>
+								<option ng-repeat="developer in developerList" value="{{developer.id}}">{{developer.name}}</option>
+							</select> 
+							<span class="input-group-btn">
+								<button class="btn btn-info" ng-click="listDeveloperStories()" type="button">Search!</button>
+							</span>
+						</div>
+					</div>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th class="col-sm-1">ID</th>
+								<th class="col-sm-3">Title</th>
+								<th class="col-sm-5">Description</th>
+								<th class="col-sm-1">Status</th>
+								<th class="col-sm-1">Point</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-if="developerStoryList.length == 0">
+								<td align="center" colspan="5">No data to show!</td>
+							</tr>
+							<tr ng-repeat="story in developerStoryList">
+								<td>{{story.issueId}}</td>
+								<td>{{story.title}}</td>
+								<td>{{story.description}}</td>
+								<td>{{story.status.description}}</td>
+								<td>{{story.point.value}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</uib-tab>
+		</uib-tabset>
+	</div>	
 </div>
-

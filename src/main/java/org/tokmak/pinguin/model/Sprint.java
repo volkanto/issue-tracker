@@ -1,18 +1,18 @@
 package org.tokmak.pinguin.model;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -43,9 +43,9 @@ public class Sprint
 	@Column(name="ENDDATE")
 	private Date endDate;
 	
-	@OneToMany
-	@JoinTable(name = "SPRINT_STORY", joinColumns = { @JoinColumn(name = "SPRINTID") }, inverseJoinColumns = { @JoinColumn(name = "STORYID") })
-	private Set<Story> sprintStories = new HashSet<Story>(0);
+	@OneToMany(targetEntity=Story.class, mappedBy="sprint", fetch=FetchType.LAZY)
+	@JsonManagedReference(value="sprint-stories")
+	private List<Story> stories;
 
 	/**
 	 * getId<br />
@@ -183,29 +183,29 @@ public class Sprint
 	}
 
 	/**
-	 * getSprintStories<br />
-	 * @return the sprintStories
+	 * getStories<br />
+	 * @return the stories
 	 *
-	 * <b>created at</b> Mar 6, 2016 1:21:00 AM
+	 * <b>created at</b> Mar 15, 2016 11:48:42 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public Set<Story> getSprintStories()
+	public List<Story> getStories()
 	{
-		return this.sprintStories;
+		return this.stories;
 	}
 
 	/**
-	 * setSprintStories<br />
+	 * setStories<br />
 	 *
-	 * @param argSprintStories the sprintStories to set
+	 * @param argStories the stories to set
 	 *
-	 * <b>created at</b> Mar 6, 2016 1:21:00 AM
+	 * <b>created at</b> Mar 15, 2016 11:48:42 PM
 	 * @author Volkan Tokmak
 	 * @since 0.0.1
 	 */
-	public void setSprintStories(Set<Story> argSprintStories)
+	public void setStories(List<Story> argStories)
 	{
-		this.sprintStories = argSprintStories;
+		this.stories = argStories;
 	}
 }

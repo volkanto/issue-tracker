@@ -17,13 +17,13 @@ import org.tokmak.pinguin.model.Story;
  */
 public interface StoryRepository extends JpaRepository<Story, Integer>
 {
-	@Query(value = "SELECT * FROM STORY WHERE ISSUEID NOT IN (SELECT S.ISSUEID FROM STORY S LEFT JOIN DEVELOPER_STORY DS ON DS.ISSUEID = S.ISSUEID WHERE S.ISSUEID = DS.ISSUEID)", nativeQuery = true)
+	@Query(value="from Story s where s.developer.id is null order by s.issueId asc")
 	public List<Story> findUnassigned();
 
 	@Override
-	@Query(value="from Story b order by b.issueId asc")
+	@Query(value="from Story s order by s.issueId asc")
 	public List<Story> findAll();
 	
-	@Query(value = "select d.developerid as developerId, sum(sp.pointvalue) as points from story s left join developer_story ds on ds.issueid = s.issueid left join developer d on d.developerid = ds.developerid inner join story_point sp on sp.storypointid = s.point_storypointid where s.issueid in :issueIds group by d.developerid", nativeQuery = true)
-	public List<Object[]> findStoryPointOfDevelopers(@Param("issueIds") List<Integer> argStoryIdList);
+	@Query(value="from Story s where s.developer.id = :developerId order by s.issueId asc")
+	public List<Story> getStoriesBy(@Param(value = "developerId") Integer argDeveloperId);
 }

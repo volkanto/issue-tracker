@@ -21,7 +21,7 @@ public class BugPriority
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="BUGPRIORITY_ID")
+	@Column(name="BUGPRIORITYID")
 	private Integer id;
 	
 	@Column(name="DESCRIPTION")

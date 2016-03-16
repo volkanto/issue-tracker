@@ -3,19 +3,18 @@ angular.module('issueTracker').controller('BugController', BugController);
 function BugController($scope, Bug, BugPriority, BugStatus, Developer) 
 {
 	$scope.bugList = [];
-	$scope.showNewBugPanel = true;
+	$scope.bugUnassignedList = [];
 	$scope.bug = {};
 	$scope.bugPriorityList = [];
 	$scope.developerList = [];
 	$scope.bugStatusList = [];
+	$scope.assign = {};
 	
-	$scope.togglePanel = function() {
-		if($scope.showNewBugPanel) {
-			$scope.showNewBugPanel = false;
-			$scope.bug = {};
-		} else {
-			$scope.showNewBugPanel = true;
-		}
+	$scope.assign = function() {
+		Bug.assign({ bugId: $scope.assign.bug.id, developerId: $scope.assign.bug.developer.id }, function(response) {
+			$scope.listAll();
+			$scope.listUnassignedBugs();
+		});
 	};
 	
 	$scope.createOrEdit = function() {
@@ -109,11 +108,18 @@ function BugController($scope, Bug, BugPriority, BugStatus, Developer)
 		});
 	};
 	
+	$scope.listUnassignedBugs = function() {
+		Bug.listUnassigned(function(response) {
+			$scope.bugUnassignedList = response ? response : [];
+		});
+	};
+	
 	$scope.init = function() {
 		$scope.listAll();	
 		$scope.listDeveloper();
 		$scope.listBugPriority()
 		$scope.listBugStatus();
+		$scope.listUnassignedBugs();
 	};
 	
 	$scope.init();

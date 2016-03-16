@@ -6,7 +6,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.tokmak.pinguin.model.Bug;
 import org.tokmak.pinguin.model.Developer;
+import org.tokmak.pinguin.model.Story;
 import org.tokmak.pinguin.repository.DeveloperRepository;
 
 /**
@@ -21,7 +23,9 @@ import org.tokmak.pinguin.repository.DeveloperRepository;
 @Transactional
 public class DeveloperService
 {
-	@Autowired private DeveloperRepository developerRepository;
+	@Autowired private DeveloperRepository developerRepo;
+	@Autowired private BugService bugService;
+	@Autowired private StoryService storyService;
 
 	/**
 	 * DeveloperService<br />
@@ -34,7 +38,7 @@ public class DeveloperService
 	 */
 	public List<Developer> findAll()
 	{
-		return this.developerRepository.findAll();
+		return this.developerRepo.findAll();
 	}
 
 	/**
@@ -55,7 +59,7 @@ public class DeveloperService
 		
 		argDeveloper.setId(null);
 		argDeveloper.setActive(true);
-		return this.developerRepository.saveAndFlush(argDeveloper);
+		return this.developerRepo.saveAndFlush(argDeveloper);
 	}
 
 	/**
@@ -70,7 +74,7 @@ public class DeveloperService
 	 */
 	private boolean developerExist(Developer argDeveloper)
 	{
-		return this.developerRepository.findByName(argDeveloper.getName()) != null ? true : false;
+		return this.developerRepo.findByName(argDeveloper.getName()) != null ? true : false;
 	}
 
 	/**
@@ -85,7 +89,10 @@ public class DeveloperService
 	 */
 	public Developer findBy(Integer argDeveloperId)
 	{
-		return this.developerRepository.findOne(argDeveloperId);
+		if(argDeveloperId == null) {
+			throw new RuntimeException("Choose correct developer!");
+		}
+		return this.developerRepo.findOne(argDeveloperId);
 	}
 
 	/**
@@ -101,7 +108,76 @@ public class DeveloperService
 	{
 		Developer developer = checkAndReturnDeveloper(argDeveloperId);
 		developer.setActive(false);
-		this.developerRepository.saveAndFlush(developer);
+		this.unassignBugs(developer);
+		this.unassignStories(developer);
+		
+		this.developerRepo.saveAndFlush(developer);
+	}
+
+	/**
+	 * DeveloperService<br />
+	 *
+	 * @param argDeveloper
+	 * 
+	 * <b>created at</b> Mar 16, 2016 1:33:26 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void unassignStories(Developer argDeveloper)
+	{
+		List<Story> developerStories = this.getStoriesBy(argDeveloper.getId());
+		developerStories.stream().forEach(story -> {
+			story.setDeveloper(null);
+			this.storyService.update(story.getIssueId(), story);
+		});
+	}
+
+	/**
+	 * DeveloperService<br />
+	 *
+	 * @param argDeveloperId
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 16, 2016 1:34:37 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private List<Story> getStoriesBy(Integer argDeveloperId)
+	{
+		return this.storyService.getStoriesBy(argDeveloperId);
+	}
+
+	/**
+	 * DeveloperService<br />
+	 *
+	 * @param argDeveloper
+	 * 
+	 * <b>created at</b> Mar 16, 2016 1:23:58 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private void unassignBugs(Developer argDeveloper)
+	{
+		List<Bug> developerBugs = this.getBugsBy(argDeveloper.getId());
+		developerBugs.stream().forEach(bug -> {
+			bug.setDeveloper(null);
+			this.bugService.update(bug.getIssueId(), bug);
+		});
+	}
+
+	/**
+	 * DeveloperService<br />
+	 *
+	 * @param argDeveloperId
+	 * @return
+	 * 
+	 * <b>created at</b> Mar 16, 2016 1:27:07 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	private List<Bug> getBugsBy(Integer argDeveloperId)
+	{
+		return this.bugService.getBugsBy(argDeveloperId);
 	}
 
 	/**
@@ -121,7 +197,7 @@ public class DeveloperService
 		checkDeveloper(argDeveloperId);
 		
 		argDeveloper.setId(argDeveloperId);
-		return this.developerRepository.saveAndFlush(argDeveloper);
+		return this.developerRepo.saveAndFlush(argDeveloper);
 	}
 
 	/**
@@ -135,7 +211,7 @@ public class DeveloperService
 	 */
 	private void checkDeveloper(Integer argDeveloperId)
 	{
-		Developer developer = this.developerRepository.findOne(argDeveloperId);
+		Developer developer = this.developerRepo.findOne(argDeveloperId);
 		if(developer == null) {
 			throw new RuntimeException("Developer not exists");
 		}
@@ -153,7 +229,7 @@ public class DeveloperService
 	 */
 	private Developer checkAndReturnDeveloper(Integer argDeveloperId)
 	{
-		Developer developer = this.developerRepository.findOne(argDeveloperId);
+		Developer developer = this.developerRepo.findOne(argDeveloperId);
 		if(developer == null) {
 			throw new RuntimeException("Developer not exists");
 		}

@@ -1,6 +1,5 @@
 package org.tokmak.pinguin.service;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -84,7 +83,7 @@ public class StoryService
 		Story newStory = this.storyRepo.saveAndFlush(argStory);
 		if(argStory.getDeveloper() != null && argStory.getDeveloper().getId() != null) {
 			Developer developer = this.developerService.findBy(argStory.getDeveloper().getId());
-			this.assign(Arrays.asList(newStory.getIssueId()), developer.getId());
+			newStory.setDeveloper(developer);
 		}
 		
 		return newStory;
@@ -118,10 +117,6 @@ public class StoryService
 	 */
 	private void setPoint(Story argStory)
 	{
-//		if(argStory.getPoint() == null) {
-//			throw new IllegalArgumentException("Choose correct point!");
-//		}
-		
 		if(argStory.getStatus().getId() == 2 && argStory.getPoint() != null) {
 			StoryPoint point = this.storyPointRepo.findOne(argStory.getPoint().getId());
 			if(point == null) {
@@ -280,15 +275,15 @@ public class StoryService
 	/**
 	 * StoryService<br />
 	 *
-	 * @param argStoryIdList
+	 * @param argDeveloperId
 	 * @return
 	 * 
-	 * <b>created at</b> Mar 13, 2016 1:24:19 AM
+	 * <b>created at</b> Mar 16, 2016 1:35:06 AM
 	 * @since 0.0.1
 	 * @author Volkan Tokmak
 	 */
-	public List<Object[]> getDeveloperStoryPointList(List<Integer> argStoryIdList)
+	public List<Story> getStoriesBy(Integer argDeveloperId)
 	{
-		return this.storyRepo.findStoryPointOfDevelopers(argStoryIdList);
+		return this.storyRepo.getStoriesBy(argDeveloperId);
 	}
 }

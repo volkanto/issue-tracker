@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.tokmak.pinguin.model.Bug;
 
 /**
@@ -17,10 +18,13 @@ import org.tokmak.pinguin.model.Bug;
  */
 public interface BugRepository extends JpaRepository<Bug, Integer>
 {
-	@Query(value = "SELECT * FROM BUG WHERE ISSUEID NOT IN (SELECT B.ISSUEID FROM BUG B LEFT JOIN DEVELOPER_BUG DB ON DB.ISSUEID = B.ISSUEID WHERE B.ISSUEID = DB.ISSUEID)", nativeQuery = true)
+	@Query(value="from Bug b where b.developer.id is null order by b.issueId asc")
 	public List<Bug> findUnassigned();
 
 	@Override
 	@Query(value="from Bug b order by b.issueId asc")
 	public List<Bug> findAll();
+
+	@Query(value="from Bug b where b.developer.id = :developerId order by b.issueId asc")
+	public List<Bug> getBugsBy(@Param(value = "developerId") Integer argDeveloperId);
 }

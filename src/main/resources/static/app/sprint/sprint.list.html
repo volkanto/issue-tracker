@@ -1,102 +1,122 @@
 <div class="row">
 	<div class="col-sm-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					<button type="button" class="btn btn-success btn-xs" ng-click="togglePanel()">
-						<span class="glyphicon glyphicon-plus"></span> Add New
-					</button> | 
-					<button type="button" class="btn btn-info btn-xs" ng-click="refresh()">
-						<span class="glyphicon glyphicon-refresh"></span> Refresh List
-					</button>
-				</h3>
-			</div>
-			<div class="panel-body">
-				<div ng-if="showNewBugPanel" class="alert alert-warning alert-dismissible" role="alert">
-         			<button type="button" class="close" ng-click="togglePanel();" data-dismiss="alert"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					
-					<div class="container">
-					    <div class="row clearfix">
-					        <div class="col-xs-11 col-sm-11">
-					            <form class="form-horizontal">
-					                <fieldset>
-										<legend>Create New Bug</legend>
-										<div class="form-group">
-											<div class="col-md-5">
-												<input id="textinput" name="textinput" type="text" ng-model="bug.title"
-													placeholder="Title" class="form-control input-md">
-											</div>
-											<div class="col-md-3">
-												<select id="selectbasic" name="selectbasic" ng-model="bug.status.id" class="form-control">
-    												<option value="" selected disabled>Status</option>
-													<option ng-repeat="bugStatus in bugStatusList" value="{{bugStatus.id}}" ng-selected="isInSelectedStatus({{bugStatus.id}})">{{bugStatus.description}}</option>
-												</select>
-											</div>
-											<div class="col-md-3">
-												<select id="selectbasic" name="selectbasic" ng-model="bug.priority.id" class="form-control">
-													<option value="" selected disabled>Priority</option>
-													<option ng-repeat="bugPriority in bugPriorityList" value="{{bugPriority.id}}" ng-selected="isInSelectedPriority({{bugPriority.id}})">{{bugPriority.description}}</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="col-md-5">
-												<textarea class="form-control" rows="3" ng-model="bug.description" placeholder="Description"></textarea>
-											</div>
-											<div class="col-md-6">
-												<select id="selectbasic" name="selectbasic" ng-model="bug.developer.id" class="form-control">
-													<option value="" selected disabled>Developer</option>
-													<option ng-repeat="developer in developerList" value="{{developer.id}}" ng-selected="isInSelectedDeveloper({{developer.id}})">{{developer.name}}</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="col-md-2">
-												<button type="button" class="btn btn-success btn-xs" ng-click="createOrEdit()">
-													<span class="glyphicon glyphicon-floppy-disk"></span> Save
-												</button>
-											</div>
-										</div>
-									</fieldset>
-				                </form>
-			                </div>
-		                </div>
-	                </div>
+		<uib-tabset active="activeForm"> 
+			<uib-tab index="0" heading="Create New Sprint / List">
+				<div class="alert alert-warning" role="alert">
+					<form class="form-horizontal">
+						<fieldset>
+							<legend>Create Sprint</legend>
+							<div class="form-group">
+								<div class="col-md-5">
+									<input id="textinput" name="textinput" type="text"
+										ng-model="sprint.title" placeholder="Title"
+										class="form-control input-md">
+								</div>
+								<div class="col-md-6">
+									<p class="input-group">
+								       <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="sprint.startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+								       <span class="input-group-btn">
+								         <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+								       </span>
+							     	</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-5">
+									<textarea class="form-control" rows="3" ng-model="sprint.description"
+										placeholder="Description"></textarea>
+								</div>
+								<div class="col-md-6">
+									<p class="input-group">
+								       <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="sprint.endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+								       <span class="input-group-btn">
+								         <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+								       </span>
+							     	</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-2">
+									<button type="button" class="btn btn-success btn-xs"
+										ng-click="createOrEdit()">
+										<span class="glyphicon glyphicon-floppy-disk"></span> Save
+									</button>
+									<button type="button" class="btn btn-danger btn-xs" ng-click="resetForm()">
+										<span class="glyphicon glyphicon-refresh"></span> Reset
+									</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th class="col-sm-1">ID</th>
+								<th class="col-sm-2">Title</th>
+								<th class="col-sm-4">Description</th>
+								<th class="col-sm-2">Start Date</th>
+								<th class="col-sm-2">End Date</th>
+								<th class="col-sm-1">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-if="sprintList == 0">
+								<td align="center" colspan="6">No data to show!</td>
+							</tr>
+							<tr ng-repeat="sprint in sprintList">
+								<td>{{sprint.id}}</td>
+								<td>{{sprint.title}}</td>
+								<td>{{sprint.description}}</td>
+								<td>{{sprint.startDate | date:'dd/MM/yyyy'}}</td>
+								<td>{{sprint.endDate | date:'dd/MM/yyyy'}}</td>
+								<td>
+									<button type="button" class="btn btn-info btn-xs" ng-click="showEditPanel(sprint)">
+										<span class="glyphicon glyphicon-edit"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-
+			</uib-tab> 
+			<uib-tab index="1" heading="List Sprint Stories">
+				<div class="alert alert-warning alert-dismissible" role="alert">
+					<div class="input-group">
+						<select id="selectbasic" name="selectbasic"
+							ng-model="searchSprint.id" class="form-control">
+							<option value="" selected>Choose Sprint</option>
+							<option ng-repeat="sprint in sprintList" value="{{sprint.id}}">{{sprint.title}}</option>
+						</select> 
+						<span class="input-group-btn">
+							<button class="btn btn-info" ng-click="listSprintStories()" type="button">Search!</button>
+						</span>
+					</div>
+				</div>
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th class="col-sm-1">ID</th>
-							<th class="col-sm-2">Title</th>
+							<th class="col-sm-4">Title</th>
 							<th class="col-sm-5">Description</th>
-							<th class="col-sm-1">Start Date</th>
-							<th class="col-sm-1">End Date</th>
+							<th class="col-sm-1">Status</th>
+							<th class="col-sm-1">Point</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-if="bugList == 0">
-							<td align="center" colspan="6">No data to show!</td>
+						<tr ng-if="sprintStoryList == 0">
+							<td align="center" colspan="5">No data to show!</td>
 						</tr>
-						<tr ng-repeat="sprint in sprintList">
-							<td>{{sprint.sprintId}}</td>
-							<td>{{sprint.title}}</td>
-							<td>{{sprint.description}}</td>
-							<td>{{sprint.startDate}}</td>
-							<td>{{sprint.endDate}}</td>
-							<td>
-								<button type="button" class="btn btn-info btn-xs" ng-click="showEditPanel(bug)">
-									<span class="glyphicon glyphicon-edit"></span>
-								</button>
-							</td>
+						<tr ng-repeat="story in sprintStoryList">
+							<td>{{story.issueId}}</td>
+							<td>{{story.title}}</td>
+							<td>{{story.description}}</td>
+							<td>{{story.status.description}}</td>
+							<td>{{story.point.value}}</td>
 						</tr>
 					</tbody>
 				</table>
-			</div>
-		</div>
+			</uib-tab>
+		</uib-tabset>
 	</div>
 </div>
 

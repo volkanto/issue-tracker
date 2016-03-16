@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -38,12 +41,16 @@ public class Bug
 	private Date creationDate;
 	
 	@OneToOne
+	@JoinColumn(name="BUGSTATUSID")
 	private BugStatus status;
 	
 	@OneToOne
+	@JoinColumn(name="BUGPRIORITYID")
 	private BugPriority priority;
 	
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="DEVELOPERID")
+	@JsonBackReference(value="developer-bugs")
 	private Developer developer;
 	
 	/**

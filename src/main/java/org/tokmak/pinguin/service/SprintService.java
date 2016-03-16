@@ -1,9 +1,7 @@
 package org.tokmak.pinguin.service;
 
-import java.util.Calendar;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -55,13 +53,6 @@ public class SprintService
 	public Sprint create(Sprint argSprint)
 	{
 		argSprint.setId(null);
-		argSprint.setStartDate(Calendar.getInstance().getTime());
-		
-		Calendar endDate = Calendar.getInstance();
-		endDate.setTime(argSprint.getStartDate());
-		endDate.add(Calendar.DATE, 5);
-		
-		argSprint.setEndDate(endDate.getTime());
 		return this.sprintRepository.saveAndFlush(argSprint);
 	}
 
@@ -120,16 +111,16 @@ public class SprintService
 			throw new IllegalArgumentException("Choose correct sprint!");
 		}
 		
-		List<Object[]> developerStories = this.storyService.getDeveloperStoryPointList(argStoryIdList);
-		for(Object[] item : developerStories)
-		{
-			Double points =  (Double) item[1];
-			if(points > 10) {
-				throw new IllegalArgumentException("Developer with id: " + item[0] + " has more than 10 story point for current sprint!");
-			}
-		}
+//		List<Object[]> developerStories = this.storyService.getDeveloperStoryPointList(argStoryIdList);
+//		for(Object[] item : developerStories)
+//		{
+//			Double points =  (Double) item[1];
+//			if(points > 10) {
+//				throw new IllegalArgumentException("Developer with id: " + item[0] + " has more than 10 story point for current sprint!");
+//			}
+//		} TODO
 		
-		Set<Story> storyListToAssign = new HashSet<>();
+		List<Story> storyListToAssign = new ArrayList<>();
 		argStoryIdList.stream().forEach(storyId -> {
 			Story story = this.storyService.findBy(storyId);
 			if(story == null) {
@@ -139,7 +130,7 @@ public class SprintService
 			storyListToAssign.add(story);
 		});
 		
-		sprint.setSprintStories(storyListToAssign);
+		sprint.setStories(storyListToAssign);
 		this.sprintRepository.saveAndFlush(sprint);
 	}
 }
