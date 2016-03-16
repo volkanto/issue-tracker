@@ -61,10 +61,6 @@ $ git clone git@github.com:volkanto/issue-tracker.git
 * Get sprint information `/sprint/{id}` `GET`
 * Assign stories to sprint `/sprint/{id}/assign/story/{storyIds}` `POST`
 
-### Usage
-
-After install, make sure to run `joe update`. This will download all `.gitignore` files in `~/joe-data/` folder.
-
 ## TO-DO's
 * Use gulp for automate ui tasks
 * add bower_components to gitignore
