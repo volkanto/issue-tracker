@@ -15,9 +15,19 @@ function StoryFactory($resource) {
 			url : '/story/list',
 			isArray:true
 		},
+		listUnassigned : {
+			method : 'GET',
+			url : '/story/unassigned/list',
+			isArray : true
+		},
 		create: {
 			method: 'POST',
 			url	: '/story/create'
+		},
+		assign : {
+			method : 'POST',
+			url : '/story/assign/:storyId/developer/:developerId',
+			params: { storyId : '@storyId', developerId : '@developerId' }
 		}
 	});
 }

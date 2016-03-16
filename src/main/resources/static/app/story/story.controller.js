@@ -1,21 +1,42 @@
 angular.module('issueTracker').controller('StoryController', StoryController);
 
-function StoryController($scope, Story, StoryPoint, StoryStatus, Developer) 
+function StoryController($scope, Story, StoryPoint, StoryStatus, Developer, Sprint) 
 {
 	$scope.storyList = [];
-	$scope.showNewStoryPanel = true;
+	$scope.storyUnassignedList = [];
 	$scope.story = {};
 	$scope.storyStatusList = [];
 	$scope.storyPointList = [];
 	$scope.developerList = [];
+	$scope.sprintList = [];
+	$scope.assign = {};
+	$scope.assignToSprint = {};
+	$scope.unassignedSprintStoryList = [];
 	
-	$scope.togglePanel = function() {
-		if($scope.showNewStoryPanel) {
-			$scope.showNewStoryPanel = false;
-			$scope.story = {};
-		} else {
-			$scope.showNewStoryPanel = true;
-		}
+	$scope.listSprint = function() {
+		Sprint.list(function(response) {
+			$scope.sprintList = response ? response : [];
+		});
+	};
+	
+	$scope.listUnassignedStoryList = function() {
+		Sprint.listUnassignedStoryList(function(response) {
+			$scope.unassignedSprintStoryList = response ? response : [];
+		});
+	};
+	
+	$scope.assign = function() {
+		Story.assign({ storyId: $scope.assign.story.id, developerId: $scope.assign.story.developer.id }, function(response) {
+			$scope.listAll();
+			$scope.listUnassignedStories();
+		});
+	};
+	
+	$scope.assignToSprint = function() {
+		Sprint.assign({ sprintId: $scope.assignToSprint.sprintId, storyId: $scope.assignToSprint.storyId }, function(response) {
+			Sprint.list();
+			$scope.listUnassignedSprintStories();
+		});
 	};
 	
 	$scope.createOrEdit = function() {
@@ -108,12 +129,21 @@ function StoryController($scope, Story, StoryPoint, StoryStatus, Developer)
 		});
 	};
 	
+	$scope.listUnassignedStories = function() {
+		Story.listUnassigned(function(response) {
+			$scope.storyUnassignedList = response ? response : [];
+		});
+	};
+	
 	$scope.init = function() {
 		$scope.listAll();	
 		$scope.listDeveloper();
 		$scope.listStoryPoint()
 		$scope.listStoryStatus();
+		$scope.listUnassignedStories();
+		$scope.listSprint();
+		$scope.listUnassignedStoryList();
 	};
-	
+		
 	$scope.init();
 }

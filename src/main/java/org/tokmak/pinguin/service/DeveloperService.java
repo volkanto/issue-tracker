@@ -235,4 +235,18 @@ public class DeveloperService
 		}
 		return developer;
 	}
+
+	/**
+	 * DeveloperService<br />
+	 *
+	 * @return
+	 *
+	 * <b>created at</b> Mar 16, 2016 10:56:53 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public Integer count()
+	{
+		return this.developerRepo.findAll().size();
+	}
 }

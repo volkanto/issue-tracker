@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.tokmak.pinguin.model.Sprint;
 import org.tokmak.pinguin.model.Story;
 
 /**
@@ -26,4 +27,13 @@ public interface StoryRepository extends JpaRepository<Story, Integer>
 	
 	@Query(value="from Story s where s.developer.id = :developerId order by s.issueId asc")
 	public List<Story> getStoriesBy(@Param(value = "developerId") Integer argDeveloperId);
+
+	@Query(value="from Story s where s.sprint.id is null and s.point.value is not null order by s.issueId asc")
+	public List<Sprint> findUnassignedSprintStories();
+
+	@Query(value="from Story s where s.sprint.id = :sprintId")
+	public List<Story> getDeveloperStoryListBy(@Param(value = "sprintId") Integer argSprintId);
+
+	@Query(value="select count(s.point.value) from Story s where s.sprint.id = :sprintId")
+	public Double getPointBy(@Param(value = "sprintId") Integer argSprintId);
 }

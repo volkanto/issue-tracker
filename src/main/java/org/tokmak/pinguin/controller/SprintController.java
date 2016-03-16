@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.tokmak.pinguin.model.Sprint;
 import org.tokmak.pinguin.service.SprintService;
+import org.tokmak.pinguin.service.StoryService;
 
 /**
  * <b>Project issue-tracker</b><br />
@@ -24,6 +25,7 @@ import org.tokmak.pinguin.service.SprintService;
 public class SprintController
 {
 	@Autowired private SprintService sprintService; 
+	@Autowired private StoryService storyService;
 	
 	/**
 	 * SprintController<br />
@@ -38,6 +40,21 @@ public class SprintController
 	public List<Sprint> listAllSprints()
 	{
 		return this.sprintService.listAll();
+	}
+	
+	/**
+	 * SprintController<br />
+	 *
+	 * @return
+	 *
+	 * <b>created at</b> Mar 16, 2016 10:20:09 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	@RequestMapping(value = "/unassigned/story/list", method = RequestMethod.GET)
+	public List<Sprint> listUnassignedStoryList()
+	{
+		return this.storyService.listUnassignedSprintStories();
 	}
 	
 	/**
@@ -99,10 +116,10 @@ public class SprintController
 	 * @since 0.0.1
 	 * @author Volkan Tokmak
 	 */
-	@RequestMapping(value = "/{sprintId}/assign/story/{storyIds}", method = RequestMethod.POST)
-	public void assignToSprint(@PathVariable(value = "storyIds") List<Integer> argStoryIds, 
+	@RequestMapping(value = "/{sprintId}/assign/story/{storyId}", method = RequestMethod.POST)
+	public void assignToSprint(@PathVariable(value = "storyId") Integer argStoryId, 
 							   @PathVariable(value = "sprintId") Integer argSprintId) 
 	{
-		this.sprintService.assign(argSprintId, argStoryIds);
+		this.sprintService.assign(argSprintId, argStoryId);
 	}
 }

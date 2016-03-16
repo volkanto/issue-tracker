@@ -1,7 +1,9 @@
 package org.tokmak.pinguin.service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.transaction.Transactional;
 
@@ -25,7 +27,8 @@ public class SprintService
 {
 	@Autowired private SprintRepository sprintRepository;
 	@Autowired private StoryService storyService;
-
+	@Autowired private DeveloperService developerService; 
+	
 	/**
 	 * SprintService<br />
 	 *
@@ -98,39 +101,53 @@ public class SprintService
 	 * SprintService<br />
 	 *
 	 * @param argSprintId
-	 * @param argStoryIdList
+	 * @param argStoryId
 	 * 
 	 * <b>created at</b> Mar 13, 2016 12:31:13 AM
 	 * @since 0.0.1
 	 * @author Volkan Tokmak
 	 */
-	public void assign(Integer argSprintId, List<Integer> argStoryIdList)
+	public void assign(Integer argSprintId, Integer argStoryId)
 	{
 		Sprint sprint = this.getInformation(argSprintId);
 		if(sprint == null) {
 			throw new IllegalArgumentException("Choose correct sprint!");
 		}
 		
-//		List<Object[]> developerStories = this.storyService.getDeveloperStoryPointList(argStoryIdList);
-//		for(Object[] item : developerStories)
-//		{
-//			Double points =  (Double) item[1];
-//			if(points > 10) {
-//				throw new IllegalArgumentException("Developer with id: " + item[0] + " has more than 10 story point for current sprint!");
-//			}
-//		} TODO
+		HashMap<String, Double> developerPointMap = new HashMap<>();
 		
-		List<Story> storyListToAssign = new ArrayList<>();
-		argStoryIdList.stream().forEach(storyId -> {
-			Story story = this.storyService.findBy(storyId);
-			if(story == null) {
-				throw new IllegalArgumentException("Choose correct stories!");	
+		List<Story> developerStories = this.storyService.getDeveloperStoryListBy(argSprintId);
+		developerStories.stream().forEach(item -> {
+			Double value = developerPointMap.get(item.getDeveloper().getName());
+			if(value != null) {
+				developerPointMap.put(item.getDeveloper().getName(), item.getPoint().getValue() + value);
+			} else {
+				developerPointMap.put(item.getDeveloper().getName(), item.getPoint().getValue());
 			}
-			
-			storyListToAssign.add(story);
 		});
 		
-		sprint.setStories(storyListToAssign);
+		for (Entry<String, Double> developerStory : developerPointMap.entrySet()) {
+			if(developerStory.getValue() > 10) {
+				throw new IllegalArgumentException("Developer with name: " + developerStory.getKey() + " has more than 10 story point for current sprint!");
+			}
+		}
+		
+		Integer totalDeveloperSize = this.developerService.count();
+		Double totalSprintPoint = this.storyService.getPointBy(argSprintId);
+		
+		if(totalSprintPoint > totalDeveloperSize * 10) {
+			throw new IllegalArgumentException("Maximum sprint story point error! You can define maximum " + totalDeveloperSize * 10 + " points. You have " + totalSprintPoint);
+		}
+		
+		
+		Story story = this.storyService.findBy(argStoryId);
+		if(story == null) {
+			throw new IllegalArgumentException("Choose correct stories!");	
+		}
+		story.setSprint(sprint);
+		this.storyService.update(story.getIssueId(), story);
+		
+		sprint.setStories(Arrays.asList(story));
 		this.sprintRepository.saveAndFlush(sprint);
 	}
 }

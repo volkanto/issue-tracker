@@ -1,15 +1,15 @@
 package org.tokmak.pinguin.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tokmak.pinguin.model.Developer;
+import org.tokmak.pinguin.model.Sprint;
 import org.tokmak.pinguin.model.Story;
 import org.tokmak.pinguin.model.StoryPoint;
 import org.tokmak.pinguin.model.StoryStatus;
@@ -230,17 +230,18 @@ public class StoryService
 			throw new IllegalArgumentException("Choose correct developer!");			
 		}
 		
-		Set<Story> storyListToAssign = new HashSet<>();
+		List<Story> storyListToAssign = new ArrayList<>();
 		argStoryIdList.stream().forEach(itemId -> {
 			Story story = this.findBy(itemId);
 			if(story == null) {
 				throw new IllegalArgumentException("Choose correct stories!");	
 			}
-			
+			story.setDeveloper(developer);
+			this.update(story.getIssueId(), story);
 			storyListToAssign.add(story);
 		});
 		
-		developer.getStories().addAll(storyListToAssign);
+		developer.setStories(storyListToAssign);
 		this.developerService.update(argDeveloperId, developer);
 	}
 	
@@ -285,5 +286,49 @@ public class StoryService
 	public List<Story> getStoriesBy(Integer argDeveloperId)
 	{
 		return this.storyRepo.getStoriesBy(argDeveloperId);
+	}
+
+	/**
+	 * StoryService<br />
+	 *
+	 * @return
+	 *
+	 * <b>created at</b> Mar 16, 2016 10:20:47 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public List<Sprint> listUnassignedSprintStories()
+	{
+		return this.storyRepo.findUnassignedSprintStories();
+	}
+
+	/**
+	 * StoryService<br />
+	 *
+	 * @param argSprintId
+	 * @return
+	 *
+	 * <b>created at</b> Mar 16, 2016 10:41:51 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public List<Story> getDeveloperStoryListBy(Integer argSprintId)
+	{
+		return this.storyRepo.getDeveloperStoryListBy(argSprintId);
+	}
+
+	/**
+	 * StoryService<br />
+	 *
+	 * @param argSprintId
+	 * @return
+	 *
+	 * <b>created at</b> Mar 16, 2016 11:02:55 AM
+	 * @since 0.0.1
+	 * @author Volkan Tokmak
+	 */
+	public Double getPointBy(Integer argSprintId)
+	{
+		return this.storyRepo.getPointBy(argSprintId);
 	}
 }

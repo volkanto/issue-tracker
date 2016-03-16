@@ -37,8 +37,11 @@
 							</div>
 							<div class="form-group">
 								<div class="col-md-2">
-									<button type="button" class="btn btn-success btn-xs" ng-click="createOrEdit()">
+									<button type="button" class="btn btn-success" ng-click="createOrEdit()">
 										<span class="glyphicon glyphicon-floppy-disk"></span> Save
+									</button>
+									<button type="button" class="btn btn-danger" ng-click="resetForm()">
+										<span class="glyphicon glyphicon-refresh"></span> Reset
 									</button>
 								</div>
 							</div>
@@ -77,8 +80,54 @@
 				</div>
 			</uib-tab>
 			<uib-tab index="1" heading="Assign Story to Developer">
+				<div class="panel-body">
+					<div class="col-md-3">
+						<select id="selectbasic" name="selectbasic"
+							ng-model="assign.story.id" class="form-control">
+							<option value="" selected disabled>..:: Choose Story ::..</option>
+							<option ng-repeat="story in storyUnassignedList"
+								value="{{story.issueId}}">{{story.title}}</option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<select id="selectbasic" name="selectbasic"
+							ng-model="assign.story.developer.id" class="form-control">
+							<option value="" selected disabled>..:: Choose Developer ::..</option>
+							<option ng-repeat="developer in developerList"
+								value="{{developer.id}}">{{developer.name}}</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-info btn-xl" ng-click="assign()">
+							<span class="glyphicon glyphicon-edit"></span> Assign
+						</button>
+					</div>
+				</div>
 			</uib-tab>
 			<uib-tab index="2" heading="Assign Story to Sprint">
+				<div class="panel-body">
+					<div class="col-md-3">
+						<select id="selectbasic" name="selectbasic"
+							ng-model="assignToSprint.storyId" class="form-control">
+							<option value="" selected disabled>..:: Choose Story ::..</option>
+							<option ng-repeat="story in unassignedSprintStoryList"
+								value="{{story.issueId}}">{{story.title}}</option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<select id="selectbasic" name="selectbasic"
+							ng-model="assignToSprint.sprintId" class="form-control">
+							<option value="" selected disabled>..:: Choose Sprint ::..</option>
+							<option ng-repeat="sprint in sprintList"
+								value="{{sprint.id}}">{{sprint.title}}</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-info btn-xl" ng-click="assignToSprint()">
+							<span class="glyphicon glyphicon-edit"></span> Assign
+						</button>
+					</div>
+				</div>
 			</uib-tab>
 		</uib-tabset>
 	</div>
